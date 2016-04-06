@@ -1,0 +1,24 @@
+{
+  "name": "apiaxle-event-processor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "js-yaml": "^3.5.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo 'no tests'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mapzen/apiaxle-event-processor.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mapzen/apiaxle-event-processor/issues"
+  },
+  "homepage": "https://github.com/mapzen/apiaxle-event-processor#readme"
+}

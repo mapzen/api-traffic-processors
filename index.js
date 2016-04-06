@@ -2,11 +2,11 @@ var fs = require('fs');
 var yaml = require('js-yaml');
 
 module.exports = function() {
-  var config = yaml.safeLoad(fs.readFileSync(__dirname + 'config.yml'));
+  var config = yaml.safeLoad(fs.readFileSync(__dirname + '/config.yml'));
   var logfilename = config.logfile;
 
   this.processHit = function(hit, cb) {
-    fs.appendFile(logfilename, formatHit(hit), cb);
+    fs.appendFile(logfilename, formatHit(hit) + '\n', cb);
   };
 }
 

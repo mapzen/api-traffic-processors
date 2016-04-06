@@ -28,5 +28,12 @@ function formatHit(hit) {
     query: hit.parsed_url ? hit.parsed_url.search : null,
     pathname: hit.parsed_url ? hit.parsed_url.pathname : null,
   };
-  return Object.keys(payload).map(function(key) {return encodeURIComponent(payload[key]);}).join(',');
+  return Object.keys(payload).map(function(key) {return encode(payload[key]);}).join(',');
+}
+
+// encode commas
+function encode(field) {
+  field = field.replace(/,/g, "%4C");
+  // field = field.replace(/'/g, "%27");
+  return field;
 }

@@ -14,8 +14,13 @@ var logger = log4js.getLogger();
 
 module.exports = function() {
   this.processHit = function(hit, cb) {
-    logger.info(formatHit(hit));
-    cb(null);
+    try {
+      logger.info(formatHit(hit));
+      cb(null);
+    } catch (err) {
+      console.log(err);
+      cb(err);
+    }
   };
 }
 

@@ -1,7 +1,7 @@
 var fs = require('fs');
 
 module.exports = function() {
-  var logfilename = process.env.traffic_logfile;
+  var logfilename = process.env.TRAFFIC_LOGFILE;
 
   this.processHit = function(hit, cb) {
     fs.appendFile(logfilename, formatHit(hit) + '\n', cb);
@@ -31,7 +31,7 @@ function formatHit(hit) {
 
 // encode commas
 function encode(field) {
-  field = field.replace(/,/g, "%4C");
+  field = String(field).replace(/,/g, "%4C");
   // field = field.replace(/'/g, "%27");
   return field;
 }

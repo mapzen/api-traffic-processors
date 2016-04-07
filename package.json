@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "log4js": "^0.6.33"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "echo 'no tests'"

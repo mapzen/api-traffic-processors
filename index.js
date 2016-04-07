@@ -1,10 +1,21 @@
-var fs = require('fs');
+var log4js = require('log4js');
+log4js.configure({
+  appenders: [
+    {
+      type: 'file',
+      layout: {
+        type: 'messagePassThrough',
+      },
+      filename: process.env.TRAFFIC_LOGFILE
+    }
+  ]
+});
+var logger = log4js.getLogger();
 
 module.exports = function() {
-  var logfilename = process.env.TRAFFIC_LOGFILE;
-
   this.processHit = function(hit, cb) {
-    fs.appendFile(logfilename, formatHit(hit) + '\n', cb);
+    logger.info(formatHit(hit));
+    cb(null);
   };
 }
 

@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {
-    "js-yaml": "^3.5.5"
-  },
+  "dependencies": {},
   "devDependencies": {},
   "scripts": {
     "test": "echo 'no tests'"

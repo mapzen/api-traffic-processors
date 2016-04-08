@@ -26,14 +26,13 @@ module.exports = function() {
 
 // hit properties:
 //   error
-//   status_code
+//   status_code || error
 //   api_name
 //   key_name
 //   keyring_names
 //   timing
 //   is_keyless
 //   parsed_url
-//   error
 function formatHit(hit) {
   var payload = {
     timestamp: new Date().getTime(),

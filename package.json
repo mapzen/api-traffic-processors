@@ -1,6 +1,6 @@
 {
-  "name": "apiaxle-event-processor",
-  "version": "1.0.1",
+  "name": "apiaxle-traffic-logger",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
@@ -12,13 +12,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mapzen/apiaxle-event-processor.git"
+    "url": "git+https://github.com/mapzen/apiaxle-traffic-logger.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mapzen/apiaxle-event-processor/issues"
+    "url": "https://github.com/mapzen/apiaxle-traffic-logger/issues"
   },
-  "homepage": "https://github.com/mapzen/apiaxle-event-processor#readme"
+  "homepage": "https://github.com/mapzen/apiaxle-traffic-logger#readme"
 }

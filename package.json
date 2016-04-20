@@ -1,24 +1,29 @@
 {
-  "name": "apiaxle-traffic-logger",
+  "name": "traffic-processors",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "aws-sdk": "^2.3.4",
     "log4js": "^0.6.33"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "sinon": "^1.17.3"
+  },
   "scripts": {
-    "test": "echo 'no tests'"
+    "test": "mocha --recursive"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mapzen/apiaxle-traffic-logger.git"
+    "url": "git+https://github.com/mapzen/traffic-processors.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mapzen/apiaxle-traffic-logger/issues"
+    "url": "https://github.com/mapzen/traffic-processors/issues"
   },
-  "homepage": "https://github.com/mapzen/apiaxle-traffic-logger#readme"
+  "homepage": "https://github.com/mapzen/traffic-processors#readme"
 }

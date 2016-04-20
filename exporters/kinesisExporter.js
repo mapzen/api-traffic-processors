@@ -6,7 +6,9 @@ module.exports = function(streamName) {
   this.add = function(payload) {
     try {
       var params = {
-        Record: payload,
+        Record: {
+          Data: payload,
+        },
         DeliveryStreamName: streamName,
       };
       console.log("sending to kinesis firehose: ", params);
@@ -14,7 +16,6 @@ module.exports = function(streamName) {
         if (err) console.log("firehose err: ", err);
         else console.log("firehose result: ", data);
       });
-      batchedRequests.length = 0;
     } catch (err) {
       console.log('failed to send record. ', err);
     }

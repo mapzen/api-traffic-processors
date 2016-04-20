@@ -1,9 +1,9 @@
-var LogExporter = require('../exporters/logExporter.js');
+var KinesisExporter = require('../exporters/kinesisExporter.js');
 var parser = require('../parsers/apiaxleParser.js');
 var formatter = require('../formatters/trafficSpaces.js');
 
 module.exports = function() {
-  var exporter = new LogExporter(process.env.TRAFFIC_LOGFILE);
+  var exporter = new KinesisExporter('streamname');
 
   this.processHit = function(hit, cb) {
     try {

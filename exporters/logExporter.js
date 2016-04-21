@@ -1,25 +1,25 @@
 var log4js = require('log4js');
+var logger = log4js.getLogger();
 
-module.exports = function(logfile) {
+module.exports = function logExporter(logfile) {
   log4js.configure({
     appenders: [
       {
         type: 'file',
         layout: {
-          type: 'messagePassThrough',
+          type: 'messagePassThrough'
         },
-        filename: logfile,
-      },
+        filename: logfile
+      }
     ]
   });
 
-  var logger = log4js.getLogger();
 
-  this.add = function(payload) {
+  this.add = function (payload) {
     try {
       logger.info(payload);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 };

@@ -10,6 +10,6 @@ module.exports = function trafficSpaces(fields) {
     fields.key,
     fields.status,
     fields.path,
-    fields.query,
+    fields.query
   ].map(clean).join(' ');
-}
+};

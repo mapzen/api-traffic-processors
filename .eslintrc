@@ -1,0 +1,7 @@
+{
+  "extends": "airbnb/legacy",
+  "rules": {
+    "func-names": 0,
+    "no-console": 0
+  }
+}

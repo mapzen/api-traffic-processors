@@ -2,16 +2,18 @@ var KinesisExporter = require('../exporters/kinesisExporter.js');
 var parser = require('../parsers/apiaxleParser.js');
 var formatter = require('../formatters/trafficSpaces.js');
 
-module.exports = function() {
+module.exports = function apiaxleKinesis() {
   var exporter = new KinesisExporter('streamname');
 
-  this.processHit = function(hit, cb) {
+  this.processHit = function processHit(hit, cb) {
+    var payload;
+    var formattedPayload;
     try {
-      var payload = parser(hit);
-      var formatted_payload = formatter(payload);
-      exporter.add(formatted_payload);
+      payload = parser(hit);
+      formattedPayload = formatter(payload);
+      exporter.add(formattedPayload);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       cb(null);
     }

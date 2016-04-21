@@ -1,7 +1,7 @@
 var AWS = require('aws-sdk');
 
-module.exports = function (streamName) {
-  var kinesis = new AWS.Firehose();
+module.exports = function (streamName, region) {
+  var kinesis = new AWS.Firehose({ region: region });
 
   this.add = function (payload) {
     var params;

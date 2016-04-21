@@ -8,8 +8,6 @@ module.exports = function trafficSpaces(fields) {
     fields.ts.toISOString(),
     fields.api,
     fields.key,
-    fields.status,
-    fields.path,
-    fields.query
+    fields.status
   ].map(clean).join(' ');
 };

@@ -8,7 +8,7 @@ module.exports = function (streamName, region) {
     try {
       params = {
         Record: {
-          Data: payload
+          Data: payload + '\n'
         },
         DeliveryStreamName: streamName
       };

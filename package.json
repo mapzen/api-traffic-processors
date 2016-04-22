@@ -1,6 +1,6 @@
 {
   "name": "traffic-processors",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
@@ -13,10 +13,11 @@
     "eslint": "^2.8.0",
     "eslint-config-airbnb": "^7.0.0",
     "mocha": "^2.4.5",
+    "proxyquire": "^1.7.4",
     "sinon": "^1.17.3"
   },
   "scripts": {
-    "test": "eslint . && mocha --recursive"
+    "test": "istanbul cover --include-all-sources ./node_modules/.bin/_mocha -- --recursive && eslint ."
   },
   "repository": {
     "type": "git",

@@ -12,10 +12,8 @@ module.exports = function (streamName, region) {
         },
         DeliveryStreamName: streamName
       };
-      console.log('sending to kinesis firehose: ', params);
-      kinesis.putRecord(params, function (err, data) {
+      kinesis.putRecord(params, function (err) {
         if (err) console.log('firehose err: ', err);
-        else console.log('firehose result: ', data);
       });
     } catch (err) {
       console.log('failed to send record. ', err);

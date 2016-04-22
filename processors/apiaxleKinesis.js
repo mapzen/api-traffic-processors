@@ -3,7 +3,7 @@ var parser = require('../parsers/apiaxleParser.js');
 var formatter = require('../formatters/trafficSpaces.js');
 
 module.exports = function apiaxleKinesis() {
-  var exporter = new KinesisExporter('streamname');
+  var exporter = new KinesisExporter(process.env.FIREHOSE_STREAM);
 
   this.processHit = function processHit(hit, cb) {
     var payload;

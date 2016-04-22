@@ -5,7 +5,7 @@ if (process.argv.length < 4) {
   return;
 }
 
-function parseFile(src, parserpath) {
+function exportFileToKinesis(src, parserpath) {
   var parser = require(parserpath);
   var formatter = require('../formatters/trafficSpaces.js');
   var KinesisExporter = require('../exporters/kinesisExporter.js');
@@ -20,4 +20,4 @@ function parseFile(src, parserpath) {
   console.log('done');
 }
 
-parseFile(process.argv[2], process.argv[3]);
+exportFileToKinesis(process.argv[2], process.argv[3]);

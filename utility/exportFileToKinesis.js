@@ -20,5 +20,3 @@ function exportFileToKinesis(src, parserpath, streamname, region) {
 }
 
 exportFileToKinesis(process.argv[2], process.argv[3], process.argv[4], process.argv[5]);
-
-var exporter = new KinesisExporter('api_hits_processing_dev', 'us-east-1');

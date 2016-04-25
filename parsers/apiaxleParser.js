@@ -5,8 +5,6 @@ module.exports = function parse(hit) {
     key: hit.key_name,
     status: hit.error
             ? hit.error.name
-            : hit.status_code,
-    query: hit.parsed_url ? hit.parsed_url.search : null,
-    path: hit.parsed_url ? hit.parsed_url.pathname : null,
+            : hit.status_code
   };
 };

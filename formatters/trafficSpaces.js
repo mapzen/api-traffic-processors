@@ -1,6 +1,6 @@
 function clean(field) {
   if (field === '' || field === undefined || field === null) return '\\N';
-  return field.replace(/ /g, '%20'); // probably not needed, but just to be safe
+  return String(field).replace(/ /g, '%20').substring(0, 256);
 }
 
 module.exports = function trafficSpaces(fields) {
@@ -8,8 +8,6 @@ module.exports = function trafficSpaces(fields) {
     fields.ts.toISOString(),
     fields.api,
     fields.key,
-    fields.status,
-    fields.path,
-    fields.query,
+    fields.status
   ].map(clean).join(' ');
-}
+};

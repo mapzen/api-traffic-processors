@@ -1,19 +1,23 @@
 {
   "name": "traffic-processors",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "dependencies": {
     "aws-sdk": "^2.3.4",
-    "log4js": "^0.6.33"
+    "log4js": "^0.6.33",
+    "urijs": "^1.17.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "eslint": "^2.8.0",
+    "eslint-config-airbnb": "^7.0.0",
     "mocha": "^2.4.5",
+    "proxyquire": "^1.7.4",
     "sinon": "^1.17.3"
   },
   "scripts": {
-    "test": "mocha --recursive"
+    "test": "istanbul cover --include-all-sources ./node_modules/.bin/_mocha -- --recursive && eslint ."
   },
   "repository": {
     "type": "git",

@@ -1,9 +1,9 @@
-var LogExporter = require('../exporters/logExporter.js');
+var KinesisExporter = require('../exporters/kinesisExporter.js');
 var parser = require('../parsers/apiaxleParser.js');
 var formatter = require('../formatters/trafficSpaces.js');
 
-module.exports = function apiaxleLog() {
-  var exporter = new LogExporter(process.env.TRAFFIC_LOGFILE);
+module.exports = function apiaxleKinesis(args) {
+  var exporter = new KinesisExporter(args.streamName, args.region);
 
   this.processHit = function processHit(hit, cb) {
     var payload;
@@ -13,7 +13,7 @@ module.exports = function apiaxleLog() {
       formattedPayload = formatter(payload);
       exporter.add(formattedPayload);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       cb(null);
     }

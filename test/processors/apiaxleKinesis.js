@@ -4,7 +4,7 @@ var expect = require('chai').expect;
 var sinon = require('sinon');
 var proxyquire = require('proxyquire');
 
-describe('kinesisExporter', function () {
+describe('apiaxleKinesis', function () {
   it('calls everything correctly', function (done) {
     var exporteradd = sinon.spy();
     var exporter = sinon.stub().returns({ add: exporteradd });
@@ -16,10 +16,9 @@ describe('kinesisExporter', function () {
       '../formatters/trafficSpaces.js': formatter
     });
 
-    process.env.FIREHOSE_STREAM = 'teststream';
-    var processor = new ApiaxleKinesis();
+    var processor = new ApiaxleKinesis({ streamName: 'teststream', region: 'oz' });
     processor.processHit('simplehit', function () {
-      expect(exporter.calledWith('teststream')).to.be.true;
+      expect(exporter.calledWith('teststream', 'oz')).to.be.true;
       expect(parser.calledWith('simplehit')).to.be.true;
       expect(formatter.calledWith('parsed')).to.be.true;
       expect(exporteradd.calledWith('formatted')).to.be.true;
@@ -38,7 +37,7 @@ describe('kinesisExporter', function () {
       '../formatters/trafficSpaces.js': formatter
     });
 
-    var processor = new ApiaxleKinesis();
+    var processor = new ApiaxleKinesis({ streamName: 'teststream', region: 'oz' });
     expect(processor.processHit('simplehit', done)).to.not.throw.errors;
   });
 });

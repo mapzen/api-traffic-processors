@@ -12,12 +12,13 @@
     "chai": "^3.5.0",
     "eslint": "^2.8.0",
     "eslint-config-airbnb": "^7.0.0",
+    "istanbul": "^0.4.3",
     "mocha": "^2.4.5",
     "proxyquire": "^1.7.4",
     "sinon": "^1.17.3"
   },
   "scripts": {
-    "test": "istanbul cover --include-all-sources ./node_modules/.bin/_mocha -- --recursive && eslint ."
+    "test": "./node_modules/.bin/istanbul cover --include-all-sources ./node_modules/.bin/_mocha -- --recursive && eslint ."
   },
   "repository": {
     "type": "git",

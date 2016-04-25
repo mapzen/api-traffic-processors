@@ -2,26 +2,14 @@
 
 ### apiaxle usage
 
+configure which traffic processors apiaxle-proxy-event-subscriber uses in the stack.json file
+
 run apiaxle-proxy without -q so that traffic gets passed to apiaxle-proxy-event-subscriber
 
 example:
 ```
 node apiaxle-proxy.js -f 1 -p 3000
-```
-
-set env vars to whatever the processor needs.
-
-run apiaxle-proxy-event-subscriber with -e requireable/path/to/traffic-processor -e another/processor
-
-
-log example:
-```
-TRAFFIC_LOGFILE=/var/log/apiaxle-traffic-processors/traffic.log node apiaxle-proxy.js -f 1 -e /usr/local/lib/node_modules/api-traffic-processors/processors/apiaxleLog.js
-```
-
-kinesis example:
-```
-FIREHOSE_STREAM=the_stream_name node apiaxle-proxy.js -f 1 -e /usr/local/lib/node_modules/api-traffic-processors/processors/apiaxleKinesis.js
+node apiaxle-proxy-event-subscriber.js -f 1
 ```
 
 ### kinesis firehose to redshift

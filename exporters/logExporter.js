@@ -14,7 +14,6 @@ module.exports = function logExporter(logfile) {
     ]
   });
 
-
   this.add = function (payload) {
     try {
       logger.info(payload);

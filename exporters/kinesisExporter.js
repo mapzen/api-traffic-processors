@@ -1,7 +1,7 @@
 var AWS = require('aws-sdk');
 
-module.exports = function (streamName, region) {
-  var kinesis = new AWS.Firehose({ region: region });
+module.exports = function (args) {
+  var kinesis = new AWS.Firehose({ region: args.region });
 
   this.add = function (payload) {
     var params;
@@ -10,7 +10,7 @@ module.exports = function (streamName, region) {
         Record: {
           Data: payload + '\n'
         },
-        DeliveryStreamName: streamName
+        DeliveryStreamName: args.streamName
       };
       kinesis.putRecord(params, function (err) {
         if (err) console.log('firehose err: ', err);

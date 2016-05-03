@@ -18,7 +18,7 @@ describe('apiaxleKinesis', function () {
 
     var processor = new ApiaxleKinesis({ streamName: 'teststream', region: 'oz' });
     processor.processHit('simplehit', function () {
-      expect(exporter.calledWith('teststream', 'oz')).to.be.true;
+      expect(exporter.calledWith({ streamName: 'teststream', region: 'oz' })).to.be.true;
       expect(parser.calledWith('simplehit')).to.be.true;
       expect(formatter.calledWith('parsed')).to.be.true;
       expect(exporteradd.calledWith('formatted')).to.be.true;

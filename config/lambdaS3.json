@@ -1,0 +1,11 @@
+{
+  "parser": "fastlyPeliasParser.js",
+  "formatter": "trafficSpaces.js",
+  "exporter": {
+    "filename": "kinesisExporter.js",
+    "args": {
+      "region": "us-east",
+      "streamName": "api_hits_processing_dev"
+    }
+  }
+}

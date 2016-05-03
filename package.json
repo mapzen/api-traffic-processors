@@ -1,10 +1,9 @@
 {
   "name": "api-traffic-processors",
-  "version": "0.1.0",
-  "description": "",
+  "version": "0.1.1",
+  "description": "package for processing api traffic from apiaxle and fastly",
   "main": "index.js",
   "dependencies": {
-    "aws-sdk": "^2.3.4",
     "log4js": "^0.6.33",
     "urijs": "^1.17.1"
   },

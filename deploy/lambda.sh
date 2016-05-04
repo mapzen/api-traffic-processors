@@ -3,8 +3,8 @@
 
 # validate params
 
-if [ "$#" -ne 2 ]; then
-  echo "need to call with env and service. for example: lambda.sh dev pelias"
+if [ "$#" -ne 1 ]; then
+  echo "need to call with env. for example: lambda.sh dev"
   exit 1
 fi
 
@@ -13,27 +13,21 @@ if [ "$1" != "dev" -a "$1" != "prod" ]; then
   exit 1
 fi
 
-if [ "$2" = "pelias" ]; then
-  parser="fastlyPeliasParser.js"
-  function="lambdaS3Pelias"
-elif [ "$2" = "vector" ]; then
-  parser="fastlyVectorParser.js"
-  function="lambdaS3Vector"
-else
-  echo "second param needs to be pelias or vector"
-  exit 1
-fi
+region="us-east-1"
 
 
 # build lambda config file
 
 echo '{
-  "parser": "'$parser'",
+  "parsers": {
+    "pelias": "fastlyPeliasParser.js",
+    "vector": "fastlyVectorParser.js"
+  },
   "formatter": "trafficSpaces.js",
   "exporter": {
     "filename": "kinesisExporter.js",
     "args": {
-      "region": "us-east",
+      "region": "'$region'",
       "streamName": "api_hits_processing_'$1'"
     }
   }
@@ -42,15 +36,21 @@ echo '{
 
 # build zip
 
+mv node_modules node_modules_dev
+mv node_modules_prod node_modules
 npm install --production
 npm prune --production
+
 rm lambdaS3.zip
-zip -r9 lambdaS3.zip ./ -x ".git/*" "test/*" "coverage/*" "deploy/*"
+zip -r9 lambdaS3.zip ./ -x ".git/*" "test/*" "coverage/*" "deploy/*" "node_modules_dev/*"
+
+mv node_modules node_modules_prod
+mv node_modules_dev node_modules
 
 
 # upload to aws
 
 aws lambda update-function-code \
-  --region us-east-1 \
-  --function-name $1 \
+  --region $region \
+  --function-name log-parsing \
   --zip-file fileb://lambdaS3.zip

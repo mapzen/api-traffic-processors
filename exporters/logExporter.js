@@ -14,11 +14,15 @@ module.exports = function logExporter(logfile) {
     ]
   });
 
-  this.add = function (payload) {
+  this.add = function (record) {
     try {
-      logger.info(payload);
+      logger.info(record);
     } catch (err) {
       console.error(err);
     }
+  };
+
+  this.addBatch = function (records) {
+    records.forEach(this.add);
   };
 };

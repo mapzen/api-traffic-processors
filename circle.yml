@@ -5,9 +5,3 @@ machine:
 general:
   artifacts:
     - "coverage/lcov-report"
-
-deployment:
-  staging:
-    branch: master
-    commands:
-      - ./deploy/lambda.sh

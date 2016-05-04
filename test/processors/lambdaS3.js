@@ -20,31 +20,44 @@ var s3Failure = {
   }
 };
 
-var s3event = {
-  Records: [
-    {
-      s3: {
-        bucket: {
-          name: 'srcbucket'
-        },
-        object: {
-          key: 'srcfile'
-        }
+var s3Event = {
+  Records: [{
+    s3: {
+      bucket: {
+        name: 'srcbucket'
+      },
+      object: {
+        key: 'dev/test/srcfile'
       }
     }
-  ]
+  }]
+};
+
+var s3BadEvent = {
+  Records: [{
+    s3: {
+      bucket: {
+        name: 'srcbucket'
+      },
+      object: {
+        key: 'dev/badservice/srcfile'
+      }
+    }
+  }]
 };
 
 function stubConfig() {
   var exporteradd = sinon.spy();
-  var exporter = { add: exporteradd };
+  var exporteraddbatch = sinon.spy();
+  var exporter = { add: exporteradd, addBatch: exporteraddbatch };
   var parser = sinon.stub().returns('parsed');
   var formatter = sinon.stub().returns('formatted');
   return {
-    parser: parser,
+    parsers: { test: parser },
     formatter: formatter,
     exporter: exporter,
-    exporteradd: exporteradd
+    exporteradd: exporteradd,
+    exporteraddbatch: exporteraddbatch
   };
 }
 
@@ -53,8 +66,8 @@ describe('lambdaS3', function () {
     var LambdaS3 = proxyquire('../../processors/lambdaS3.js', { 'aws-sdk': s3Success });
     var processor = new LambdaS3(stubConfig());
 
-    processor(s3event, null, function (err) {
-      expect(err).to.be.falsy;
+    processor(s3Event, null, function (err) {
+      expect(err).to.not.exist;
       done();
     });
   });
@@ -63,7 +76,17 @@ describe('lambdaS3', function () {
     var LambdaS3 = proxyquire('../../processors/lambdaS3.js', { 'aws-sdk': s3Failure });
     var processor = new LambdaS3(stubConfig());
 
-    processor(s3event, null, function (err) {
+    processor(s3Event, null, function (err) {
+      expect(err).to.be.an.error;
+      done();
+    });
+  });
+
+  it('returns error when no parser for service', function (done) {
+    var LambdaS3 = proxyquire('../../processors/lambdaS3.js', { 'aws-sdk': s3Success });
+    var processor = new LambdaS3(stubConfig());
+
+    processor(s3BadEvent, null, function (err) {
       expect(err).to.be.an.error;
       done();
     });

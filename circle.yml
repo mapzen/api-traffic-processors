@@ -10,4 +10,4 @@ deployment:
   staging:
     branch: master
     commands:
-      - ./deploy.sh dev
+      - ./deploy/lambda.sh dev

@@ -28,8 +28,7 @@ module.exports = function (config) {
         formatted.push(formatter(parser(line)));
       });
       exporter.addBatch(formatted);
-      console.log('finished sending');
-      callback(null);
+      callback();
     });
   };
 };

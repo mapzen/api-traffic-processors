@@ -18,6 +18,8 @@ region="us-east-1"
 
 # build lambda config file
 
+mkdir -p config
+
 echo '{
   "parsers": {
     "pelias": "fastlyPeliasParser.js",

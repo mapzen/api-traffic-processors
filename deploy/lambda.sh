@@ -32,7 +32,9 @@ echo '{
       "region": "'$region'",
       "streamName": "api_hits_processing_'$1'"
     }
-  }
+  },
+  "destBucket": "mapzen-fastly-logs",
+  "destPrefix": "testing_dead"
 }' > `dirname $0`/../config/lambdaS3.json
 
 

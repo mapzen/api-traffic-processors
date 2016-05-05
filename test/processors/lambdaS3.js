@@ -9,6 +9,8 @@ var s3Success = {
     this.getObject = function (ignored, callback) {
       callback(null, { Body: 'results\n' });
     };
+    this.copyObject = function (ignored, callback) { callback(null); };
+    this.deleteObject = function (ignored, callback) { callback(null); };
   }
 };
 

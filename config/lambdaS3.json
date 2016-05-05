@@ -10,5 +10,7 @@
       "region": "us-east-1",
       "streamName": "api_hits_processing_dev"
     }
-  }
+  },
+  "destBucket": "mapzen-fastly-logs",
+  "destPrefix": "testing_dead"
 }

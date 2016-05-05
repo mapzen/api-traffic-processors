@@ -9,6 +9,8 @@ module.exports = function (filename) {
   return {
     parsers: parsers,
     formatter: require('../formatters/' + config.formatter),
-    exporter: new (require('../exporters/' + config.exporter.filename))(config.exporter.args)
+    exporter: new (require('../exporters/' + config.exporter.filename))(config.exporter.args),
+    destBucket: config.destBucket,
+    destPrefix: config.destPrefix
   };
 };

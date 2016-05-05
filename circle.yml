@@ -5,3 +5,9 @@ machine:
 general:
   artifacts:
     - "coverage/lcov-report"
+
+deployment:
+  staging:
+    branch: master
+    commands:
+      - ./deploy.sh dev

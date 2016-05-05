@@ -1,6 +1,13 @@
 machine:
   node:
     version: 4.2.2
+
 general:
   artifacts:
     - "coverage/lcov-report"
+
+deployment:
+  staging:
+    branch: master
+    commands:
+      - ./deploy.sh dev

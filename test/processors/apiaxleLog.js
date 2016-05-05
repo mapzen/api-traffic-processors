@@ -16,7 +16,7 @@ describe('apiaxleLog', function () {
       '../formatters/trafficSpaces.js': formatter
     });
 
-    var processor = new ApiaxleLog();
+    var processor = new ApiaxleLog({ logfile: 'testlog' });
     processor.processHit('simplehit', function () {
       expect(exporter.calledOnce).to.be.true;
       expect(parser.calledWith('simplehit')).to.be.true;
@@ -37,7 +37,7 @@ describe('apiaxleLog', function () {
       '../formatters/trafficSpaces.js': formatter
     });
 
-    var processor = new ApiaxleLog();
+    var processor = new ApiaxleLog({ logfile: 'testlog' });
     expect(processor.processHit('simplehit', done)).to.not.throw.errors;
   });
 });

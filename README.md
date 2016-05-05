@@ -1,10 +1,34 @@
-## package for processing api traffic
+## Package for processing api traffic
 
-### apiaxle usage
+## Installing
+clone package and run `npm install`
 
-configure which traffic processors apiaxle-proxy-event-subscriber uses in the stack.json file
+## Testing
+```npm test```
 
-run apiaxle-proxy without -q so that traffic gets passed to apiaxle-proxy-event-subscriber
+## Package Structure
+
+#### Processors
+Entry points are called "processors" and are exposed in index.js.
+
+A processor obtains raw input, and sends it through parser -> formatter -> exporter
+
+#### Parsers
+Parsers convert raw input into parsed records for a formatter to handle.
+
+Each parser has a matching fixture file in test/fixtures and its test file will make sure each line is parsed into the correct format.
+
+#### Formatters
+Formatters convert parsed records into a specific format for logging/importing to redshift/etc.
+
+#### Exporters
+Exporters should be created with "new" and have .add(record) and .addBatch(records) methods
+
+## Apiaxle Usage
+
+tell apiaxle to 'require' apiaxleKinesis.js or apiaxleLog.js by adding to apiaxle.traffic_processors in the stack.json in https://github.com/mapzen/opsworks-apiaxle
+
+If you're running apiaxle locally, you can accomplish the same thing by adding to the "traffic_processors" section of the apiaxle.json config file, and then be sure to run apiaxle-proxy without -q so that traffic gets passed to apiaxle-proxy-event-subscriber.
 
 example:
 ```
@@ -12,7 +36,7 @@ node apiaxle-proxy.js -f 1 -p 3000
 node apiaxle-proxy-event-subscriber.js -f 1
 ```
 
-### kinesis firehose to redshift
+## Kinesis Firehose to Redshift
 
 example command for delivery stream to copy to redshift:
 ```

@@ -29,8 +29,8 @@ function base64(length) {
   letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
                  'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
   base64chars = letters.concat(letters.map(function (c) {return c.toUpperCase();}))
-                           .concat(['-', '_'])
-                           .concat(numbers);
+                       .concat(['-', '_'])
+                       .concat(numbers);
   return buildstring(length, base64chars);
 }
 

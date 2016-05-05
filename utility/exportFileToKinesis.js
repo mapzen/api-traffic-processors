@@ -9,13 +9,15 @@ function exportFileToKinesis(src, parserpath, streamname, region) {
   var parser = require(parserpath);
   var formatter = require('../formatters/trafficSpaces.js');
   var KinesisExporter = require('../exporters/kinesisExporter.js');
-  var exporter = new KinesisExporter(streamname, region);
+  var exporter = new KinesisExporter({ streamName: streamname, region: region });
   var lines = fs.readFileSync(src).toString().split('\n');
   var i;
+  var batch = [];
   for (i = 0; i < lines.length; i++) {
     if (!lines[i]) continue;
-    exporter.add(formatter(parser(lines[i])));
+    batch.push(formatter(parser(lines[i])));
   }
+  exporter.addBatch(batch);
   console.log('done');
 }
 

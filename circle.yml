@@ -12,8 +12,7 @@ deployment:
     commands:
       - ./deploy/lambda.sh dev
 
-deployment:
-  staging:
+  production:
     branch: production
     commands:
       - ./deploy/lambda.sh prod

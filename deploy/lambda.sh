@@ -18,7 +18,7 @@ region="us-east-1"
 
 # build lambda config file
 
-./buildLambdaConfig.sh $1
+./deploy/buildLambdaConfig.sh $1
 
 
 # build zip

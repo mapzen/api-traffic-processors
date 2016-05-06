@@ -1,6 +1,8 @@
 function clean(field) {
   if (field === '' || field === undefined || field === null) return '\\N';
-  return String(field).replace(/\\/g, '').replace(/ /g, '%20').substring(0, 256);
+  var cleaned = String(field).replace(/\\/g, '').replace(/ /g, '%20').substring(0, 256);
+  if (cleaned === '') return '\\N';
+  return cleaned;
 }
 
 module.exports = function trafficSpaces(fields) {

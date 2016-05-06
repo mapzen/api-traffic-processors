@@ -9,7 +9,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 if [ "$1" != "dev" -a "$1" != "prod" ]; then
-  echo "first param needs to be dev or prod"
+  echo "param needs to be dev or prod"
   exit 1
 fi
 
@@ -18,24 +18,7 @@ region="us-east-1"
 
 # build lambda config file
 
-mkdir -p config
-
-echo '{
-  "parsers": {
-    "pelias": "fastlyPeliasParser.js",
-    "vector": "fastlyVectorParser.js"
-  },
-  "formatter": "trafficSpaces.js",
-  "exporter": {
-    "filename": "kinesisExporter.js",
-    "args": {
-      "region": "'$region'",
-      "streamName": "api_hits_processing_'$1'"
-    }
-  },
-  "destBucket": "mapzen-fastly-logs",
-  "destPrefix": "testing_dead"
-}' > `dirname $0`/../config/lambdaS3.json
+./buildLambdaConfig.sh $1
 
 
 # build zip

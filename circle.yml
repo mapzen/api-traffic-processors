@@ -11,3 +11,9 @@ deployment:
     branch: master
     commands:
       - ./deploy/lambda.sh dev
+
+deployment:
+  staging:
+    branch: production
+    commands:
+      - ./deploy/lambda.sh prod

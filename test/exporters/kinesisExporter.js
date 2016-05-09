@@ -28,10 +28,12 @@ describe('kinesisExporter', function () {
       });
       var exporter = new KinesisExporter({ region: 'oz', streamName: 'teststream' });
 
-      exporter.add('payload');
-      expect(stubs.putRecord.firstCall.args[0]).to.deep.equal({
-        DeliveryStreamName: 'teststream',
-        Record: { Data: 'payload\n' }
+      exporter.add('payload', function (err) {
+        expect(err).to.not.exist;
+        expect(stubs.putRecord.firstCall.args[0]).to.deep.equal({
+          DeliveryStreamName: 'teststream',
+          Record: { Data: 'payload\n' }
+        });
       });
     });
   });
@@ -44,10 +46,12 @@ describe('kinesisExporter', function () {
       });
       var exporter = new KinesisExporter({ region: 'oz', streamName: 'teststream' });
 
-      exporter.addBatch(['payload']);
-      expect(stubs.putRecordBatch.firstCall.args[0]).to.deep.equal({
-        DeliveryStreamName: 'teststream',
-        Records: [{ Data: 'payload\n' }]
+      exporter.addBatch(['payload'], function (err) {
+        expect(err).to.not.exist;
+        expect(stubs.putRecordBatch.firstCall.args[0]).to.deep.equal({
+          DeliveryStreamName: 'teststream',
+          Records: [{ Data: 'payload\n' }]
+        });
       });
     });
 
@@ -63,13 +67,19 @@ describe('kinesisExporter', function () {
         rows.push('a');
       }
 
-      exporter.addBatch(rows);
-      expect(stubs.putRecordBatch.firstCall.args[0].Records.length).to.equal(500);
-      expect(stubs.putRecordBatch.secondCall.args[0]).to.deep.equal({
-        DeliveryStreamName: 'teststream',
-        Records: [{ Data: 'a\n' }]
+      exporter.addBatch(rows, function (err) {
+        expect(err).to.not.exist;
+        console.log('a');
+        expect(stubs.putRecordBatch.firstCall.args[0].Records.length).to.equal(500);
+        console.log('b');
+        expect(stubs.putRecordBatch.secondCall.args[0]).to.deep.equal({
+          DeliveryStreamName: 'teststream',
+          Records: [{ Data: 'a\n' }]
+        });
+        console.log('c');
+        expect(stubs.putRecordBatch.calledTwice).to.be.true;
+        console.log('d');
       });
-      expect(stubs.putRecordBatch.calledTwice).to.be.true;
     });
   });
 });

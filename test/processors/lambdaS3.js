@@ -49,8 +49,8 @@ var s3BadEvent = {
 };
 
 function stubConfig() {
-  var exporteradd = sinon.spy();
-  var exporteraddbatch = sinon.spy();
+  var exporteradd = sinon.stub().callsArgWith(1, null);
+  var exporteraddbatch = sinon.stub().callsArgWith(1, null);
   var exporter = { add: exporteradd, addBatch: exporteraddbatch };
   var parser = sinon.stub().returns('parsed');
   var formatter = sinon.stub().returns('formatted');

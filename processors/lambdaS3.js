@@ -56,7 +56,7 @@ module.exports = function (config) {
             Bucket: srcBucket,
             Key: event.Records[0].s3.object.key
           }, function (deleteerr) {
-            if (err) {
+            if (deleteerr) {
               console.error('Error: s3 delete failed for ' + srcKey + '\n' + deleteerr.message);
             } else {
               console.log('Loaded ' + srcKey + ' and ' + exportresult);

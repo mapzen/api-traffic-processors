@@ -26,7 +26,9 @@ module.exports = function (config) {
     }
 
     s3.getObject({ Bucket: srcBucket, Key: srcKey }, function getS3Object(err, data) {
-      if (err) return callback(new Error('Error: s3 get failed with ' + err.message));
+      if (err) {
+        return callback(new Error('Error: s3 get failed for ' + srcKey + '\n' + err.message));
+      }
       var lines = data.Body.toString().split('\n');
       var formatted = [];
       lines.forEach(function (line) {

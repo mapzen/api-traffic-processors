@@ -6,7 +6,7 @@ var proxyquire = require('proxyquire');
 
 describe('apiaxleKinesis', function () {
   it('calls everything correctly', function (done) {
-    var exporteradd = sinon.spy();
+    var exporteradd = sinon.stub().callsArg(1, null, {});
     var exporter = sinon.stub().returns({ add: exporteradd });
     var parser = sinon.stub().returns('parsed');
     var formatter = sinon.stub().returns('formatted');
@@ -24,20 +24,5 @@ describe('apiaxleKinesis', function () {
       expect(exporteradd.calledWith('formatted')).to.be.true;
       done();
     });
-  });
-
-  it('catches errors', function (done) {
-    var exporteradd = sinon.spy();
-    var exporter = sinon.stub().returns({ add: exporteradd });
-    var parser = sinon.stub().throws('intentional error');
-    var formatter = sinon.stub().returns('formatted');
-    var ApiaxleKinesis = proxyquire('../../processors/apiaxleKinesis.js', {
-      '../exporters/kinesisExporter.js': exporter,
-      '../parsers/apiaxleParser.js': parser,
-      '../formatters/trafficSpaces.js': formatter
-    });
-
-    var processor = new ApiaxleKinesis({ streamName: 'teststream', region: 'oz' });
-    expect(processor.processHit('simplehit', done)).to.not.throw.errors;
   });
 });

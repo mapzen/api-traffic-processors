@@ -11,14 +11,8 @@ module.exports = function apiaxleKinesis(args) {
   this.processHit = function processHit(hit, cb) {
     var payload;
     var formattedPayload;
-    try {
-      payload = parser(hit);
-      formattedPayload = formatter(payload);
-      exporter.add(formattedPayload);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      cb(null);
-    }
+    payload = parser(hit);
+    formattedPayload = formatter(payload);
+    exporter.add(formattedPayload, cb);
   };
 };

@@ -17,8 +17,9 @@ function exportFileToKinesis(src, parserpath, streamname, region) {
     if (!lines[i]) continue;
     batch.push(formatter(parser(lines[i])));
   }
-  exporter.addBatch(batch);
-  console.log('done');
+  exporter.addBatch(batch, function (exporterr, exportresult) {
+    console.log(exporterr, exportresult);
+  });
 }
 
 exportFileToKinesis(process.argv[2], process.argv[3], process.argv[4], process.argv[5]);

@@ -4,7 +4,7 @@
 # validate params
 
 if [ "$#" -ne 1 ]; then
-  echo "need to call with env. for example: lambda.sh dev"
+  echo "need to call with env. for example: buildLambdaConfig.sh dev"
   exit 1
 fi
 

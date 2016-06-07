@@ -39,5 +39,5 @@ mv node_modules_dev node_modules
 
 aws lambda update-function-code \
   --region $region \
-  --function-name log-parsing \
+  --function-name log-parsing-$1 \
   --zip-file fileb://lambdaS3.zip

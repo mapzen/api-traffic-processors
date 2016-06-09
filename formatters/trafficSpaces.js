@@ -10,6 +10,8 @@ module.exports = function trafficSpaces(fields) {
     fields.ts.toISOString(),
     fields.api,
     fields.key,
-    fields.status
+    fields.status,
+    fields.origin,
+    fields.cacheHit === 'MISS'
   ].map(clean).join(' ');
 };

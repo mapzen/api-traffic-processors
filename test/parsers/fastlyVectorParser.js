@@ -19,6 +19,8 @@ describe('fastlyVectorParser', function () {
         expect(parsed.api).to.have.length.above(0);
         expect(parsed.status).to.have.length.above(0);
         expect(parsed.key).to.not.be.undefined;
+        expect(parsed.origin).to.not.be.undefined;
+        expect(parsed.cacheHit).to.not.be.undefined;
       } catch (err) {
         console.log(line);
         console.log(parsed);

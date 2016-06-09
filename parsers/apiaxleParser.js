@@ -5,6 +5,8 @@ module.exports = function parse(hit) {
     key: hit.key_name,
     status: hit.error
             ? hit.error.name
-            : hit.status_code
+            : hit.status_code,
+    origin: 'apiaxle',
+    cacheHit: null
   };
 };

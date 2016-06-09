@@ -1,3 +1,7 @@
+0.1.3
+-----
+add origin and duplicate columns to api_hits
+
 0.1.2
 -----
 fix: apiaxleKinesis uses callbacks

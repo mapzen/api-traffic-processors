@@ -16,12 +16,16 @@ describe('fastlyPeliasParser', function () {
       try {
         expect(parsed.ts).to.be.instanceof(Date);
         expect(isFinite(parsed.ts)).to.be.true;
-        expect(parsed.api).to.have.length.above(0);
-        expect(parsed.key).to.have.length.above(0);
         expect(parsed.status).to.have.length.above(0);
-        expect(parsed.origin).to.not.be.undefined;
+        expect(parsed.payloadSize).to.not.be.undefined;
+        expect(parsed.method).to.not.be.undefined;
+        expect(parsed.uri).to.not.be.undefined;
+        expect(parsed.key).to.have.length.above(0);
         expect(parsed.cacheHit).to.not.be.undefined;
-        expect(parsed.responseTime).to.not.be.undefined;
+        expect(parsed.totalTime).to.not.be.undefined;
+        expect(parsed.firstByteTime).to.not.be.undefined;
+        expect(parsed.api).to.have.length.above(0);
+        expect(parsed.origin).to.not.be.undefined;
       } catch (err) {
         console.log(line);
         console.log(parsed);

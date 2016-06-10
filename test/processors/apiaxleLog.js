@@ -5,6 +5,14 @@ var sinon = require('sinon');
 var proxyquire = require('proxyquire');
 
 describe('apiaxleLog', function () {
+  beforeEach(function () {
+    sinon.stub(console, 'error');
+  });
+
+  afterEach(function () {
+    console.error.restore();
+  });
+
   it('calls everything', function (done) {
     var exporteradd = sinon.spy();
     var exporter = sinon.stub().returns({ add: exporteradd });
@@ -39,5 +47,6 @@ describe('apiaxleLog', function () {
 
     var processor = new ApiaxleLog({ logfile: 'testlog' });
     expect(processor.processHit('simplehit', done)).to.not.throw.errors;
+    expect(console.error.called).to.be.true;
   });
 });

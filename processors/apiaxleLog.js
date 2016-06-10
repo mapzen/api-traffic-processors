@@ -11,7 +11,7 @@ module.exports = function apiaxleLog(args) {
       var formattedPayload = formatter(payload);
       exporter.add(formattedPayload);
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       cb(null);
     }

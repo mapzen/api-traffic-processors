@@ -1,3 +1,8 @@
+0.1.5
+-----
+add fastly_traffic_v2 and pelias_traffic_v2
+add pausing
+
 0.1.4
 -----
 new fastly log format

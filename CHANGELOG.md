@@ -1,3 +1,7 @@
+0.1.4
+-----
+new fastly log format
+
 0.1.3
 -----
 add origin and duplicate columns to api_hits

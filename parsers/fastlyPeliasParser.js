@@ -3,9 +3,9 @@ var keyFromPath = require('../utility/keyFromPath.js');
 module.exports = function parse(line) {
   var fields = line.split(' ');
   var timestamp = fields[0].substring(5);
-  var fullPath = fields[13];
-  var status = fields[14];
-  var cacheHit = fields[15];
+  var status = fields[4];
+  var fullPath = fields[7];
+  var cacheHit = fields[8];
 
   return {
     ts: new Date(timestamp),

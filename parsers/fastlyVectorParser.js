@@ -5,11 +5,14 @@ module.exports = function parse(line) {
   var timestamp = fields[0].substring(5);
   var fullPath = fields[12];
   var status = fields[13];
+  var cacheHit = fields[14];
 
   return {
     ts: new Date(timestamp),
     api: 'vector-tiles',
     key: keyFromPath(fullPath),
-    status: status
+    status: status,
+    origin: 'fastly',
+    cacheHit: cacheHit
   };
 };

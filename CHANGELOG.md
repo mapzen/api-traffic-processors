@@ -1,3 +1,8 @@
+0.1.3
+-----
+add origin and duplicate columns to api_hits
+don't move fastly logs after parsing them
+
 0.1.2
 -----
 fix: apiaxleKinesis uses callbacks

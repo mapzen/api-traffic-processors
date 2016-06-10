@@ -6,6 +6,7 @@ module.exports = function parse(line) {
   var status = fields[4];
   var fullPath = fields[7];
   var cacheHit = fields[8];
+  var responseTime = fields[9];
 
   return {
     ts: new Date(timestamp),
@@ -13,6 +14,7 @@ module.exports = function parse(line) {
     key: keyFromPath(fullPath),
     status: status,
     origin: 'fastly',
-    cacheHit: cacheHit
+    cacheHit: cacheHit,
+    responseTime: responseTime
   };
 };

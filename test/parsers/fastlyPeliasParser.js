@@ -21,6 +21,7 @@ describe('fastlyPeliasParser', function () {
         expect(parsed.status).to.have.length.above(0);
         expect(parsed.origin).to.not.be.undefined;
         expect(parsed.cacheHit).to.not.be.undefined;
+        expect(parsed.responseTime).to.not.be.undefined;
       } catch (err) {
         console.log(line);
         console.log(parsed);

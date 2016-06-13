@@ -1,5 +1,7 @@
 ## Package for processing api traffic
 
+![diagram](https://cloud.githubusercontent.com/assets/5049698/16020943/2eeb9e3c-317e-11e6-867b-56bd97b707d5.png)
+
 ## Installing
 clone package and run `npm install`
 

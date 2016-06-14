@@ -4,7 +4,7 @@ var AWS = require('aws-sdk');
 var s3 = new AWS.S3();
 
 function parseS3EventRecord(record) {
-  var key = record.s3.object.key;
+  var key = decodeURIComponent(record.s3.object.key.replace(/\+/g, ' '));
   var keyComponents = key.split('/');
   return {
     bucket: record.s3.bucket.name,
@@ -20,7 +20,7 @@ function pauseHandler(config, event, context, callback) {
     var parsedS3 = parseS3EventRecord(s3Record);
     s3.copyObject({
       Bucket: config.pauseBucket,
-      CopySource: parsedS3.bucket + '/' + parsedS3.key,
+      CopySource: parsedS3.bucket + '/' + s3Record.s3.object.key,
       Key: config.pausePrefix + '/' + parsedS3.service + '/' + parsedS3.filename
     }, function (copyerr) {
       if (copyerr) {

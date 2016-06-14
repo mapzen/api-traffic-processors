@@ -1,16 +1,18 @@
 module.exports = function (filename) {
   var config = require('../config/' + filename);
+  if (config.pause) return config;
 
-  var parsers = {};
-  Object.keys(config.parsers).forEach(function (parser) {
-    parsers[parser] = require('../parsers/' + config.parsers[parser]);
+  var result = {};
+  Object.keys(config).forEach(function (prefix) {
+    result[prefix] = {
+      parser: require('../parsers/' + config[prefix].parser),
+      outputs: config[prefix].outputs.map(function (output) {
+        return {
+          formatter: require('../formatters/' + output.formatter),
+          exporter: new (require('../exporters/' + output.exporter.filename))(output.exporter.args)
+        };
+      })
+    };
   });
-
-  return {
-    parsers: parsers,
-    formatter: require('../formatters/' + config.formatter),
-    exporter: new (require('../exporters/' + config.exporter.filename))(config.exporter.args),
-    destBucket: config.destBucket,
-    destPrefix: config.destPrefix
-  };
+  return result;
 };

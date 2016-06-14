@@ -1,1 +1,1 @@
-<134>2016-06-10T18:42:26Z cache-fra1228 vector-dev-logs-new[495599]: 188.138.118.144 200 22 GET /osm/_healthcheck/12/1206/1540.json?api_key=vector-tiles-abcdefg MISS 408
+<134>2016-06-10T18:42:26Z cache-fra1228 vector-dev-logs-new[495599]: 188.138.118.144 200 22 GET /osm/_healthcheck/12/1206/1540.json?api_key=vector-tiles-abcdefg MISS 408 0.408

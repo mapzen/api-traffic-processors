@@ -3,13 +3,20 @@
 
 # validate params
 
-if [ "$#" -ne 1 ]; then
-  echo "need to call with env. for example: buildLambdaConfig.sh dev"
+if [ "$#" -eq 0 ]; then
+  echo "example:"
+  echo "buildLambdaConfig.sh dev"
+  echo "buildLambdaConfig.sh dev pause"
   exit 1
 fi
 
 if [ "$1" != "dev" -a "$1" != "prod" -a "$1" != "test" ]; then
   echo "param needs to be dev, prod, or test"
+  exit 1
+fi
+
+if [ "$#" -eq 2 -a "$2" != "pause" ]; then
+  echo "second param needs to be pause"
   exit 1
 fi
 
@@ -20,17 +27,67 @@ region="us-east-1"
 
 mkdir -p config
 
+if [ "$2" = "pause" ]; then
+
 echo '{
-  "parsers": {
-    "pelias": "fastlyPeliasParser.js",
-    "vector": "fastlyVectorParser.js"
+  "pause": "true",
+  "pauseBucket": "mapzen-fastly-logs",
+  "pausePrefix": "'$1'-logs-paused"
+}' > `dirname $0`/../config/lambdaS3.json
+
+else
+
+echo '{
+  "pelias": {
+    "parser": "fastlyPeliasParser.js",
+    "outputs": [
+      {
+        "formatter": "trafficSpaces.js",
+        "exporter": {
+          "filename": "kinesisExporter.js",
+          "args": {
+            "region": "'$region'",
+            "streamName": "api_hits_processing_'$1'"
+          }
+        }
+      },
+      {
+        "formatter": "peliasTraffic.js",
+        "exporter": {
+          "filename": "kinesisExporter.js",
+          "args": {
+            "region": "'$region'",
+            "streamName": "pelias_traffic_processing_'$1'"
+          }
+        }
+      }
+    ]
   },
-  "formatter": "trafficSpaces.js",
-  "exporter": {
-    "filename": "kinesisExporter.js",
-    "args": {
-      "region": "'$region'",
-      "streamName": "api_hits_processing_'$1'"
-    }
+  "vector": {
+    "parser": "fastlyVectorParser.js",
+    "outputs": [
+      {
+        "formatter": "trafficSpaces.js",
+        "exporter": {
+          "filename": "kinesisExporter.js",
+          "args": {
+            "region": "'$region'",
+            "streamName": "api_hits_processing_'$1'"
+          }
+        }
+      },
+      {
+        "formatter": "vectorTraffic.js",
+        "exporter": {
+          "filename": "kinesisExporter.js",
+          "args": {
+            "region": "'$region'",
+            "streamName": "vector_traffic_processing_'$1'"
+          }
+        }
+      }
+    ]
   }
 }' > `dirname $0`/../config/lambdaS3.json
+
+fi

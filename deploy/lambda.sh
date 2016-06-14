@@ -3,8 +3,10 @@
 
 # validate params
 
-if [ "$#" -ne 1 ]; then
-  echo "need to call with env. for example: lambda.sh dev"
+if [ "$#" -eq 0 ]; then
+  echo "example usage:"
+  echo "  lambda.sh dev"
+  echo "  lambda.sh dev pause"
   exit 1
 fi
 
@@ -13,12 +15,17 @@ if [ "$1" != "dev" -a "$1" != "prod" ]; then
   exit 1
 fi
 
+if [ "$#" -eq 2 -a "$2" != "pause" ]; then
+  echo "second param needs to be pause"
+  exit 1
+fi
+
 region="us-east-1"
 
 
 # build lambda config file
 
-./deploy/buildLambdaConfig.sh $1
+./deploy/buildLambdaConfig.sh $1 $2
 
 
 # build zip

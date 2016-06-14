@@ -1,6 +1,6 @@
 {
   "name": "api-traffic-processors",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "package for processing api traffic from apiaxle and fastly",
   "main": "index.js",
   "dependencies": {
@@ -13,6 +13,7 @@
     "eslint": "^2.8.0",
     "eslint-config-airbnb": "^7.0.0",
     "istanbul": "^0.4.3",
+    "jsverify": "^0.7.1",
     "mocha": "^2.4.5",
     "proxyquire": "^1.7.4",
     "sinon": "^1.17.3"

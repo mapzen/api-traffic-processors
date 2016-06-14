@@ -6,11 +6,25 @@ var proxyquire = require('proxyquire');
 
 var s3Success = {
   S3: function () {
-    this.getObject = function (ignored, callback) {
-      callback(null, { Body: 'results\n' });
-    };
-    this.copyObject = function (ignored, callback) { callback(null); };
-    this.deleteObject = function (ignored, callback) { callback(null); };
+    this.getObject = sinon.stub().callsArgWith(1, null, { Body: 'results\n' });
+    this.copyObject = sinon.stub().callsArgWith(1, null);
+    this.deleteObject = sinon.stub().callsArgWith(1, null);
+  }
+};
+
+var s3BadCopy = {
+  S3: function () {
+    this.getObject = sinon.stub().callsArgWith(1, null, { Body: 'results\n' });
+    this.copyObject = sinon.stub().callsArgWith(1, new Error('intentional error'));
+    this.deleteObject = sinon.stub().callsArgWith(1, null);
+  }
+};
+
+var s3BadDelete = {
+  S3: function () {
+    this.getObject = sinon.stub().callsArgWith(1, null, { Body: 'results\n' });
+    this.copyObject = sinon.stub().callsArgWith(1, null);
+    this.deleteObject = sinon.stub().callsArgWith(1, new Error('intentional error'));
   }
 };
 
@@ -55,7 +69,18 @@ function stubConfig() {
   var parser = sinon.stub().returns('parsed');
   var formatter = sinon.stub().returns('formatted');
   return {
-    parsers: { test: parser },
+    test: {
+      parser: parser,
+      outputs: [
+        {
+          formatter: formatter,
+          exporter: exporter
+        }
+      ]
+    },
+
+    // also directly expose stubs for easy overriding in tests
+    parser: parser,
     formatter: formatter,
     exporter: exporter,
     exporteradd: exporteradd,
@@ -64,33 +89,90 @@ function stubConfig() {
 }
 
 describe('lambdaS3', function () {
-  it('runs without errors', function (done) {
-    var LambdaS3 = proxyquire('../../processors/lambdaS3.js', { 'aws-sdk': s3Success });
-    var processor = new LambdaS3(stubConfig());
+  describe('handler', function () {
+    beforeEach(function () {
+      sinon.stub(console, 'error');
+    });
 
-    processor(s3Event, null, function (err) {
-      expect(err).to.not.exist;
-      done();
+    afterEach(function () {
+      console.error.restore();
+    });
+
+    it('runs without errors', function () {
+      var LambdaS3 = proxyquire('../../processors/lambdaS3.js', { 'aws-sdk': s3Success });
+      var processor = new LambdaS3(stubConfig());
+      processor(s3Event, null, function (err) {
+        expect(err).to.be.null;
+      });
+      expect(console.error.called).to.be.false;
+    });
+
+    it('sends s3 get errors to the callback', function (done) {
+      var LambdaS3 = proxyquire('../../processors/lambdaS3.js', { 'aws-sdk': s3Failure });
+      var processor = new LambdaS3(stubConfig());
+
+      processor(s3Event, null, function (err) {
+        expect(err).to.be.an.error;
+        done();
+      });
+    });
+
+    it('logs error when no parser for service', function () {
+      var LambdaS3 = proxyquire('../../processors/lambdaS3.js', { 'aws-sdk': s3Success });
+      var processor = new LambdaS3(stubConfig());
+
+      processor(s3BadEvent);
+      expect(console.error.called).to.be.true;
+    });
+
+    it('logs error when addBatch fails', function () {
+      var LambdaS3 = proxyquire('../../processors/lambdaS3.js', { 'aws-sdk': s3Success });
+      var config = stubConfig();
+      config.exporteraddbatch.callsArgWith(1, new Error('err'));
+      var processor = new LambdaS3(config);
+
+      processor(s3Event);
+      expect(console.error.called).to.be.true;
     });
   });
 
-  it('sends s3 errors to the callback', function (done) {
-    var LambdaS3 = proxyquire('../../processors/lambdaS3.js', { 'aws-sdk': s3Failure });
-    var processor = new LambdaS3(stubConfig());
-
-    processor(s3Event, null, function (err) {
-      expect(err).to.be.an.error;
-      done();
+  describe('pauseHandler', function () {
+    beforeEach(function () {
+      sinon.stub(console, 'error');
     });
-  });
 
-  it('returns error when no parser for service', function (done) {
-    var LambdaS3 = proxyquire('../../processors/lambdaS3.js', { 'aws-sdk': s3Success });
-    var processor = new LambdaS3(stubConfig());
+    afterEach(function () {
+      console.error.restore();
+    });
 
-    processor(s3BadEvent, null, function (err) {
-      expect(err).to.be.an.error;
-      done();
+    it('runs without errors', function () {
+      var LambdaS3 = proxyquire('../../processors/lambdaS3.js', { 'aws-sdk': s3Success });
+      var processor = new LambdaS3({ pause: true, pauseBucket: 'b', pausePrefix: 'p' });
+
+      processor(s3Event, null, function (err) {
+        expect(err).to.not.exist;
+      });
+      expect(console.error.called).to.be.false;
+    });
+
+    it('calls callback on copy error', function (done) {
+      var LambdaS3 = proxyquire('../../processors/lambdaS3.js', { 'aws-sdk': s3BadCopy });
+      var processor = new LambdaS3({ pause: true, pauseBucket: 'b', pausePrefix: 'p' });
+
+      processor(s3Event, null, function (err) {
+        expect(err).to.exist;
+        done();
+      });
+    });
+
+    it('logs on delete error', function () {
+      var LambdaS3 = proxyquire('../../processors/lambdaS3.js', { 'aws-sdk': s3BadDelete });
+      var processor = new LambdaS3({ pause: true, pauseBucket: 'b', pausePrefix: 'p' });
+
+      processor(s3Event, null, function (err) {
+        expect(err).to.not.exist;
+      });
+      expect(console.error.called).to.be.true;
     });
   });
 });

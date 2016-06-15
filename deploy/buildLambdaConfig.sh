@@ -42,7 +42,7 @@ echo '{
     "parser": "fastlyPeliasParser.js",
     "outputs": [
       {
-        "formatter": "trafficSpaces.js",
+        "formatter": "apiHits.js",
         "exporter": {
           "filename": "kinesisExporter.js",
           "args": {
@@ -67,7 +67,7 @@ echo '{
     "parser": "fastlyVectorParser.js",
     "outputs": [
       {
-        "formatter": "trafficSpaces.js",
+        "formatter": "apiHits.js",
         "exporter": {
           "filename": "kinesisExporter.js",
           "args": {

@@ -1,3 +1,9 @@
+0.1.6
+-----
+rename pelias-search to search
+ignore cacheHits for vector-tiles
+trigger lambda retry on firehose put failure
+
 0.1.5
 -----
 add fastly_traffic_v2 and pelias_traffic_v2

@@ -1,6 +1,6 @@
 var LogExporter = require('../exporters/logExporter.js');
 var parser = require('../parsers/apiaxleParser.js');
-var formatter = require('../formatters/trafficSpaces.js');
+var formatter = require('../formatters/apiHits.js');
 
 module.exports = function apiaxleLog(args) {
   var exporter = new LogExporter({ logfile: args.logfile });

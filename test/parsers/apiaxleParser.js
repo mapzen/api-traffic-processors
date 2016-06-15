@@ -48,4 +48,15 @@ describe('apiaxleParser', function () {
       cacheHit: null
     });
   });
+
+  it('renames pelias-search to search', function () {
+    expect(apiaxleParser(examples['pelias-search'])).to.deep.equal({
+      api: 'search',
+      key: '1234',
+      status: 200,
+      ts: new Date(0),
+      origin: 'apiaxle',
+      cacheHit: null
+    });
+  });
 });

@@ -13,7 +13,7 @@ describe('apiaxleKinesis', function () {
     var ApiaxleKinesis = proxyquire('../../processors/apiaxleKinesis.js', {
       '../exporters/kinesisExporter.js': exporter,
       '../parsers/apiaxleParser.js': parser,
-      '../formatters/trafficSpaces.js': formatter
+      '../formatters/apiHits.js': formatter
     });
 
     var processor = new ApiaxleKinesis({ streamName: 'teststream', region: 'oz' });

@@ -5,7 +5,7 @@ function clean(field) {
   return cleaned;
 }
 
-module.exports = function trafficSpaces(fields) {
+module.exports = function apiHits(fields) {
   return [
     fields.ts.toISOString(),
     fields.api,

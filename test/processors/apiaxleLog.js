@@ -21,7 +21,7 @@ describe('apiaxleLog', function () {
     var ApiaxleLog = proxyquire('../../processors/apiaxleLog.js', {
       '../exporters/logExporter.js': exporter,
       '../parsers/apiaxleParser.js': parser,
-      '../formatters/trafficSpaces.js': formatter
+      '../formatters/apiHits.js': formatter
     });
 
     var processor = new ApiaxleLog({ logfile: 'testlog' });
@@ -42,7 +42,7 @@ describe('apiaxleLog', function () {
     var ApiaxleLog = proxyquire('../../processors/apiaxleLog.js', {
       '../exporters/logExporter.js': exporter,
       '../parsers/apiaxleParser.js': parser,
-      '../formatters/trafficSpaces.js': formatter
+      '../formatters/apiHits.js': formatter
     });
 
     var processor = new ApiaxleLog({ logfile: 'testlog' });

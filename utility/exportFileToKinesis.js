@@ -7,7 +7,7 @@ if (process.argv.length < 6) {
 
 function exportFileToKinesis(src, parserpath, streamname, region) {
   var parser = require(parserpath);
-  var formatter = require('../formatters/trafficSpaces.js');
+  var formatter = require('../formatters/apiHits.js');
   var KinesisExporter = require('../exporters/kinesisExporter.js');
   var exporter = new KinesisExporter({ streamName: streamname, region: region });
   var lines = fs.readFileSync(src).toString().split('\n');

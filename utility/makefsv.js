@@ -1,13 +1,13 @@
 var fs = require('fs');
 
-if (process.argv.length < 5) {
-  console.log('need to call with src, dest filenames, and parser');
+if (process.argv.length < 6) {
+  console.log('need to call with src, dest filenames, parser, and formatter');
   return;
 }
 
-function parseFile(src, dest, parserpath) {
-  var parser = require(parserpath);
-  var formatter = require('../formatters/trafficSpaces.js');
+function parseFile(src, dest, parserpath, formatterpath) {
+  var parser = require('../parsers/' + parserpath);
+  var formatter = require('../formatters/' + formatterpath);
   var lines = fs.readFileSync(src).toString().split('\n');
   var i;
   var output = [];
@@ -19,4 +19,4 @@ function parseFile(src, dest, parserpath) {
   console.log('done');
 }
 
-parseFile(process.argv[2], process.argv[3], process.argv[4]);
+parseFile(process.argv[2], process.argv[3], process.argv[4], process.argv[5]);

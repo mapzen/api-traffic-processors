@@ -32,8 +32,8 @@ module.exports = function (args) {
       firehose.putRecordBatch(params, function (err, response) {
         if (err) return callback(new Error('firehose err: ' + err + response));
         if (response.FailedPutCount > 0) {
-          console.error('failed to send ' + response.FailedPutCount + ' of ' +
-                        curslice.length + ' records. ', response);
+          return callback(new Error('failed to send ' + response.FailedPutCount + ' of ' +
+                                    curslice.length + ' records. ', response));
         }
 
         if (start + 500 < batch.length) {

@@ -1,6 +1,6 @@
 var KinesisExporter = require('../exporters/kinesisExporter.js');
 var parser = require('../parsers/apiaxleParser.js');
-var formatter = require('../formatters/trafficSpaces.js');
+var formatter = require('../formatters/apiHits.js');
 
 module.exports = function apiaxleKinesis(args) {
   var exporter = new KinesisExporter({

@@ -6,12 +6,19 @@ function clean(field) {
 }
 
 module.exports = function apiHits(fields) {
+  var duplicate;
+  if (fields.api === 'vector-tiles') {
+    duplicate = false;
+  } else {
+    duplicate = fields.cacheHit === 'MISS';
+  }
+
   return [
     fields.ts.toISOString(),
     fields.api,
     fields.key,
     fields.status,
     fields.origin,
-    fields.cacheHit === 'MISS'
+    duplicate
   ].map(clean).join(' ');
 };

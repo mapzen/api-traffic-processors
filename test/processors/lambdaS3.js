@@ -125,14 +125,16 @@ describe('lambdaS3', function () {
       expect(console.error.called).to.be.true;
     });
 
-    it('logs error when addBatch fails', function () {
+    it('returns error when addBatch fails', function (done) {
       var LambdaS3 = proxyquire('../../processors/lambdaS3.js', { 'aws-sdk': s3Success });
       var config = stubConfig();
       config.exporteraddbatch.callsArgWith(1, new Error('err'));
       var processor = new LambdaS3(config);
 
-      processor(s3Event);
-      expect(console.error.called).to.be.true;
+      processor(s3Event, null, function (err) {
+        expect(err).to.be.an.error;
+        done();
+      });
     });
   });
 

@@ -69,9 +69,9 @@ function handler(config, event, context, callback) {
             var newerr = new Error('Error: exporter.addBatch failed for ' + parsedS3.key +
                                    '\n' + exporterr.message);
             newerr.stack = exporterr.stack + '\n' + newerr.stack;
-            console.error(newerr);
-            // callback(null) not needed because of how lambda works
+            return callback(newerr);
           }
+          // callback(null) not needed because of how lambda works
         });
       });
     });

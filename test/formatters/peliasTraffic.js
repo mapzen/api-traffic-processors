@@ -16,4 +16,9 @@ describe('peliasTraffic', function () {
     var payload = { ts: new Date(0), uri: new URI() };
     expect(peliasTraffic(payload).split(' ')[0]).to.equal('1970-01-01T00:00:00.000Z');
   });
+
+  it('removes api_key from query', function () {
+    var payload = { ts: new Date(0), uri: new URI('/path?api_key=a&text=test') };
+    expect(peliasTraffic(payload).split(' ')[3]).to.equal('{"text":"test"}');
+  });
 });

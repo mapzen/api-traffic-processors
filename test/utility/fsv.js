@@ -47,6 +47,10 @@ describe('fsv', function () {
     it('uses \\N for 0 length', function () {
       expect(fsv.escapeField('aaa', 0)).to.eq('\\N');
     });
+
+    it('works when passed non-string type', function () {
+      expect(fsv.escapeField(12, 10)).to.eq('12');
+    });
   });
 
   describe('cleanInt', function () {

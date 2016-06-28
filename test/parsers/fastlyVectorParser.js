@@ -21,11 +21,11 @@ describe('fastlyVectorParser', function () {
         expect(parsed.method).to.not.be.undefined;
         expect(parsed.uri).to.not.be.undefined;
         expect(parsed.key).to.not.be.undefined;
-        expect(parsed.cacheHit).to.not.be.undefined;
         expect(parsed.totalTime).to.not.be.undefined;
         expect(parsed.firstByteTime).to.not.be.undefined;
         expect(parsed.api).to.have.length.above(0);
         expect(parsed.origin).to.not.be.undefined;
+        expect(parsed.server).to.be.oneOf(['fastly', 's3', 'tileserver']);
       } catch (err) {
         console.log(line);
         console.log(parsed);

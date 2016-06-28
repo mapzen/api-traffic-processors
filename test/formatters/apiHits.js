@@ -52,11 +52,19 @@ describe('apiHits', function () {
       expect(apiHits(payload).split(' ')[5]).to.equal('true');
     });
 
-    it('never markes duplicate for vector-tiles', function () {
-      var payload = { ts: new Date(), api: 'vector-tiles', cacheHit: 'HIT' };
+    it('not duplicate for fastly', function () {
+      var payload = { ts: new Date(), api: 'vector-tiles', cacheHit: 'HIT', server: 'fastly' };
       expect(apiHits(payload).split(' ')[5]).to.equal('false');
-      payload = { ts: new Date(), api: 'vector-tiles', cacheHit: 'MISS' };
+    });
+
+    it('not duplicate for s3', function () {
+      var payload = { ts: new Date(), api: 'vector-tiles', cacheHit: 'MISS', server: 's3' };
       expect(apiHits(payload).split(' ')[5]).to.equal('false');
+    });
+
+    it('duplicate for tileserver', function () {
+      var payload = { ts: new Date(), api: 'vector-tiles', cacheHit: 'MISS', server: 'tileserver' };
+      expect(apiHits(payload).split(' ')[5]).to.equal('true');
     });
   });
 });

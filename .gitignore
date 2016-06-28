@@ -3,3 +3,4 @@ node_modules_prod
 .DS_Store
 coverage
 config
+lambdaS3.zip

@@ -40,8 +40,8 @@ module.exports = function vectorTraffic(fields) {
     fsv.escapeField(pathParts.format, 100),
     fsv.escapeField(fields.key, 100),
     fsv.cleanInt(fields.status, 2),
-    fields.cacheHit === 'HIT',
     fsv.cleanInt(fields.totalTime, 4),
-    fsv.cleanInt(fields.firstByteTime, 4)
+    fsv.cleanInt(fields.firstByteTime, 4),
+    fsv.escapeField(fields.server, 100)
   ].join(' ');
 };

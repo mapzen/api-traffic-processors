@@ -20,24 +20,31 @@ describe('vectorTraffic', function () {
   it('works with 8 component paths', function () {
     var payload = { ts: new Date(0), uri: new URI('/999/abcdef/s/l/134/156/12.form') };
     expect(vectorTraffic(payload))
-      .to.eq('1970-01-01T00:00:00.000Z \\N s l 156 12 134 form \\N \\N false \\N \\N');
+      .to.eq('1970-01-01T00:00:00.000Z \\N s l 156 12 134 form \\N \\N \\N \\N \\N');
   });
 
   it('works with 6 component paths', function () {
     var payload = { ts: new Date(0), uri: new URI('/s/l/134/156/12.form') };
     expect(vectorTraffic(payload))
-      .to.eq('1970-01-01T00:00:00.000Z \\N s l 156 12 134 form \\N \\N false \\N \\N');
+      .to.eq('1970-01-01T00:00:00.000Z \\N s l 156 12 134 form \\N \\N \\N \\N \\N');
   });
 
   it('skips with unknown number of component paths', function () {
     var payload = { ts: new Date(0), uri: new URI('/s/l/134/1/56/12.form') };
     expect(vectorTraffic(payload))
-      .to.eq('1970-01-01T00:00:00.000Z \\N \\N \\N \\N \\N \\N \\N \\N \\N false \\N \\N');
+      .to.eq('1970-01-01T00:00:00.000Z \\N \\N \\N \\N \\N \\N \\N \\N \\N \\N \\N \\N');
   });
 
   it('skips it there is more than one . in the path', function () {
     var payload = { ts: new Date(0), uri: new URI('/s/l/134/56/1.2.form') };
     expect(vectorTraffic(payload))
-      .to.eq('1970-01-01T00:00:00.000Z \\N \\N \\N \\N \\N \\N \\N \\N \\N false \\N \\N');
+      .to.eq('1970-01-01T00:00:00.000Z \\N \\N \\N \\N \\N \\N \\N \\N \\N \\N \\N \\N');
+  });
+
+  it('sets the server to app', function () {
+    var payload = { ts: new Date(0), uri: new URI('/s/l/134/156/12.form'), cacheHit: false,
+                    server: 'tileserver' };
+    expect(vectorTraffic(payload))
+      .to.eq('1970-01-01T00:00:00.000Z \\N s l 156 12 134 form \\N \\N \\N \\N tileserver');
   });
 });

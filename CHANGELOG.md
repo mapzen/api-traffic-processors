@@ -1,3 +1,8 @@
+0.1.7
+-----
+capture vector tiles server
+update deploy script
+
 0.1.6
 -----
 rename pelias-search to search

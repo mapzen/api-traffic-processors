@@ -8,7 +8,7 @@ function clean(field) {
 module.exports = function apiHits(fields) {
   var duplicate;
   if (fields.api === 'vector-tiles') {
-    duplicate = false;
+    duplicate = fields.server === 'tileserver';
   } else {
     duplicate = fields.cacheHit === 'MISS';
   }

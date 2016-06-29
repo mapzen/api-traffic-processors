@@ -30,8 +30,8 @@ region="us-east-1"
 
 # build zip
 
-mv node_modules node_modules_dev
-mv node_modules_prod node_modules
+[ -d node_modules ] && mv node_modules node_modules_dev
+[ -d node_modules_prod ] && mv node_modules_prod node_modules
 npm install --production
 npm prune --production
 
@@ -39,7 +39,7 @@ rm lambdaS3.zip
 zip -r9 lambdaS3.zip ./ -x ".git/*" "test/*" "coverage/*" "deploy/*" "node_modules_dev/*"
 
 mv node_modules node_modules_prod
-mv node_modules_dev node_modules
+[ -d node_modules_dev ] && mv node_modules_dev node_modules
 
 
 # upload to aws

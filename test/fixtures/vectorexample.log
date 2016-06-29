@@ -1,1 +1,4 @@
-<134>2016-06-10T18:42:26Z cache-fra1228 vector-dev-logs-new[495599]: 188.138.118.144 200 22 GET /osm/_healthcheck/12/1206/1540.json?api_key=vector-tiles-abcdefg MISS 408 0.408
+<134>2016-06-10T18:42:26Z cache-fra1228 vector-dev-logs-new[495599]: 188.138.118.144 200 22 GET /osm/_healthcheck/12/1206/1540.json?api_key=vector-tiles-abcdefg MISS 408 0.408 App
+<134>2016-06-28T22:10:26Z cache-fra1240 vector-dev-logs-new[62959]: 178.255.155.2 200 22 GET /osm/_healthcheck/12/1206/1540.json?api_key=vector-tiles-abcdefg MISS 614 0.614 App
+<134>2016-06-28T22:10:57Z cache-atl6240 vector-dev-logs-new[62959]: 108.176.27.194 304 (null) GET /20160622/ba5d6/osm/all/1/1/1.json MISS 24 0.025 Fastly
+<134>2016-06-28T22:10:58Z cache-atl6240 vector-dev-logs-new[62959]: 108.176.27.194 304 (null) GET /20160622/ba5d6/osm/all/1/1/1.json HIT 24 0.025 Fastly

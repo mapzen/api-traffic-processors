@@ -11,7 +11,17 @@ module.exports = function parse(line) {
   var cacheHit = fields[8];
   var totalTime = fields[9];
   var firstByteSecs = fields[10];
+  var serverField = fields[11];
   var uri = new URI(fullPath);
+
+  var server = null;
+  if (cacheHit === 'HIT') {
+    server = 'fastly';
+  } else if (serverField === 'App') {
+    server = 'tileserver';
+  } else {
+    server = 's3';
+  }
 
   return {
     ts: new Date(timestamp),
@@ -20,10 +30,10 @@ module.exports = function parse(line) {
     method: method,
     uri: uri,
     key: keyFromUri(uri),
-    cacheHit: cacheHit,
     totalTime: totalTime,
     firstByteTime: Number(firstByteSecs) * 1000,
     api: 'vector-tiles',
-    origin: 'fastly'
+    origin: 'fastly',
+    server: server
   };
 };

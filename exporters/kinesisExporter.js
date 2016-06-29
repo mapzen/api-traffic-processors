@@ -15,7 +15,7 @@ module.exports = function (args) {
       DeliveryStreamName: args.streamName
     };
     firehose.putRecord(params, function (err, data) {
-      if (err) return callback(new Error('firehose err: ', err, data));
+      if (err) return callback(new Error('firehose err: ' + err + data));
       callback(null, 'sent record');
     });
   };

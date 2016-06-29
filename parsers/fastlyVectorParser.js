@@ -15,7 +15,7 @@ module.exports = function parse(line) {
   var uri = new URI(fullPath);
 
   var server = null;
-  if (cacheHit) {
+  if (cacheHit === 'HIT') {
     server = 'fastly';
   } else if (serverField === 'App') {
     server = 'tileserver';

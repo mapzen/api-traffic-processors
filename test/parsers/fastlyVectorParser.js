@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-/* eslint no-unused-expressions: 0 */
+/* eslint no-unused-expressions: 0, max-len: 0 */
 var fs = require('fs');
 var expect = require('chai').expect;
 
@@ -32,5 +32,14 @@ describe('fastlyVectorParser', function () {
         throw (err);
       }
     });
+  });
+
+  it('sets server based on cache_hit and server headers', function () {
+    var fastlyline = '<134>2016-06-29T16:00:20Z cache-jfk1032 vector-dev-logs-new[514302]: 184.72.113.161 200 3969 GET /osm/all/1/1/1.mvt?api_key=vector-tiles-abcdefg HIT 175 0.175 Fastly';
+    var tileserverline = '<134>2016-06-29T16:00:20Z cache-jfk1032 vector-dev-logs-new[514302]: 184.72.113.161 200 3969 GET /osm/all/1/1/1.mvt?api_key=vector-tiles-abcdefg MISS 175 0.175 App';
+    var s3line = '<134>2016-06-29T16:00:20Z cache-jfk1032 vector-dev-logs-new[514302]: 184.72.113.161 200 3969 GET /osm/all/1/1/1.mvt?api_key=vector-tiles-abcdefg MISS 175 0.175 Fastly';
+    expect(fastlyVectorParser(fastlyline).server).to.eq('fastly');
+    expect(fastlyVectorParser(tileserverline).server).to.eq('tileserver');
+    expect(fastlyVectorParser(s3line).server).to.eq('s3');
   });
 });

@@ -21,20 +21,82 @@ function stubFirehose(fails) {
 
 describe('kinesisExporter', function () {
   describe('add', function () {
-    it('produces correct output', function () {
+    var clock;
+    beforeEach(function () { clock = sinon.useFakeTimers(); });
+    afterEach(function () { clock.restore(); });
+
+    it('sends after .1 seconds', function () {
       var stubs = stubFirehose();
       var KinesisExporter = proxyquire('../../exporters/kinesisExporter.js', {
         'aws-sdk': { Firehose: stubs.Firehose }
       });
       var exporter = new KinesisExporter({ region: 'oz', streamName: 'teststream' });
 
-      exporter.add('payload', function (err) {
-        expect(err).to.not.exist;
-        expect(stubs.putRecord.firstCall.args[0]).to.deep.equal({
-          DeliveryStreamName: 'teststream',
-          Record: { Data: 'payload\n' }
-        });
+      exporter.add('payload');
+      clock.tick(99);
+      expect(stubs.putRecordBatch.callCount).to.eq(0);
+      clock.tick(1);
+      expect(stubs.putRecordBatch.callCount).to.eq(1);
+      expect(stubs.putRecordBatch.firstCall.args[0]).to.deep.equal({
+        DeliveryStreamName: 'teststream',
+        Records: [{ Data: 'payload\n' }]
       });
+    });
+
+    it('sends after 500 adds', function () {
+      var stubs = stubFirehose();
+      var KinesisExporter = proxyquire('../../exporters/kinesisExporter.js', {
+        'aws-sdk': { Firehose: stubs.Firehose }
+      });
+      var exporter = new KinesisExporter({ region: 'oz', streamName: 'teststream' });
+
+      for (var i = 0; i < 499; i++) {
+        exporter.add('payload');
+      }
+      expect(stubs.putRecordBatch.called).to.be.false;
+      exporter.add('payload');
+      exporter.add('payload');
+      expect(stubs.putRecordBatch.called).to.be.true;
+      expect(stubs.putRecordBatch.firstCall.args[0].Records.length).to.eq(500);
+    });
+
+    it('retries batch at expected intervals', function () {
+      var stubs = stubFirehose(true);
+      var KinesisExporter = proxyquire('../../exporters/kinesisExporter.js', {
+        'aws-sdk': { Firehose: stubs.Firehose }
+      });
+      var exporter = new KinesisExporter({ region: 'oz', streamName: 'teststream' });
+
+      exporter.add('payload');
+      clock.tick(100);
+      expect(stubs.putRecordBatch.callCount).to.eq(1);
+      clock.tick(99);
+      expect(stubs.putRecordBatch.callCount).to.eq(1);
+      clock.tick(1);
+      expect(stubs.putRecordBatch.callCount).to.eq(2);
+
+      clock.tick(999);
+      expect(stubs.putRecordBatch.callCount).to.eq(2);
+      clock.tick(1);
+      expect(stubs.putRecordBatch.callCount).to.eq(3);
+
+      clock.tick(9999);
+      expect(stubs.putRecordBatch.callCount).to.eq(3);
+      clock.tick(1);
+      expect(stubs.putRecordBatch.callCount).to.eq(4);
+
+      clock.tick(119999);
+      expect(stubs.putRecordBatch.callCount).to.eq(4);
+      clock.tick(1);
+      expect(stubs.putRecordBatch.callCount).to.eq(5);
+
+      clock.tick(299999);
+      expect(stubs.putRecordBatch.callCount).to.eq(5);
+      clock.tick(1);
+      expect(stubs.putRecordBatch.callCount).to.eq(6);
+
+      clock.tick(1000000000);
+      expect(stubs.putRecordBatch.callCount).to.eq(6);
     });
   });
 

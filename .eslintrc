@@ -3,6 +3,7 @@
   "rules": {
     "func-names": 0,
     "no-console": 0,
-    "vars-on-top": 0
+    "vars-on-top": 0,
+    "no-trailing-spaces": 0
   }
 }

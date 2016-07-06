@@ -1,3 +1,7 @@
+0.1.8
+-----
+add batching and retries for kinesisExporter
+
 0.1.7
 -----
 capture vector tiles server

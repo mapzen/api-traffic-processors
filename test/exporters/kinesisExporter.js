@@ -4,13 +4,13 @@ var expect = require('chai').expect;
 var sinon = require('sinon');
 var proxyquire = require('proxyquire');
 
-function stubFirehose(fails) {
-  var putRecord = fails
-                  ? sinon.stub().callsArgWith(1, new Error('intentional error'))
-                  : sinon.stub().callsArg(1, null, {});
-  var putRecordBatch = fails
-                       ? sinon.stub().callsArgWith(1, new Error('intentional error'))
-                       : sinon.stub().callsArgWith(1, null, {});
+function stubFirehose(works) {
+  var putRecord = works
+                  ? sinon.stub().callsArg(1, null, {})
+                  : sinon.stub().callsArgWith(1, new Error('intentional error'));
+  var putRecordBatch = works
+                       ? sinon.stub().callsArgWith(1, null, {})
+                       : sinon.stub().callsArgWith(1, new Error('intentional error'));
 
   return {
     Firehose: sinon.stub().returns({ putRecord: putRecord, putRecordBatch: putRecordBatch }),
@@ -26,7 +26,7 @@ describe('kinesisExporter', function () {
     afterEach(function () { clock.restore(); });
 
     it('sends after .1 seconds', function () {
-      var stubs = stubFirehose();
+      var stubs = stubFirehose(true);
       var KinesisExporter = proxyquire('../../exporters/kinesisExporter.js', {
         'aws-sdk': { Firehose: stubs.Firehose }
       });
@@ -44,7 +44,7 @@ describe('kinesisExporter', function () {
     });
 
     it('sends after 500 adds', function () {
-      var stubs = stubFirehose();
+      var stubs = stubFirehose(true);
       var KinesisExporter = proxyquire('../../exporters/kinesisExporter.js', {
         'aws-sdk': { Firehose: stubs.Firehose }
       });
@@ -55,13 +55,12 @@ describe('kinesisExporter', function () {
       }
       expect(stubs.putRecordBatch.called).to.be.false;
       exporter.add('payload');
-      exporter.add('payload');
       expect(stubs.putRecordBatch.called).to.be.true;
       expect(stubs.putRecordBatch.firstCall.args[0].Records.length).to.eq(500);
     });
 
     it('retries batch at expected intervals', function () {
-      var stubs = stubFirehose(true);
+      var stubs = stubFirehose(false);
       var KinesisExporter = proxyquire('../../exporters/kinesisExporter.js', {
         'aws-sdk': { Firehose: stubs.Firehose }
       });
@@ -102,7 +101,7 @@ describe('kinesisExporter', function () {
 
   describe('addBatch', function () {
     it('produces correct output', function () {
-      var stubs = stubFirehose();
+      var stubs = stubFirehose(true);
       var KinesisExporter = proxyquire('../../exporters/kinesisExporter.js', {
         'aws-sdk': { Firehose: stubs.Firehose }
       });
@@ -118,7 +117,7 @@ describe('kinesisExporter', function () {
     });
 
     it('sends in batches of 500', function () {
-      var stubs = stubFirehose();
+      var stubs = stubFirehose(true);
       var KinesisExporter = proxyquire('../../exporters/kinesisExporter.js', {
         'aws-sdk': { Firehose: stubs.Firehose }
       });

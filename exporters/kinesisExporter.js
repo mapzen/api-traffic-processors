@@ -14,6 +14,10 @@ module.exports = function (args) {
   var timerId;
 
   function send() {
+    if (timerId) {
+      clearTimeout(timerId);
+      timerId = null;
+    }
     if (queue.length === 0) return;
     for (var i = 0; i < queue.length; i += 500) {
       sendBatch(queue.slice(i, i + 500), 0);
@@ -40,10 +44,6 @@ module.exports = function (args) {
   this.add = function (record) {
     queue.push(prepareRecord(record));
     if (queue.length >= 500) {
-      if (timerId) {
-        clearTimeout(timerId);
-        timerId = null;
-      }
       send();
     } else if (!timerId) {
       timerId = setTimeout(send, 100);

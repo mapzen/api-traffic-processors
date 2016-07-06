@@ -59,6 +59,62 @@ describe('kinesisExporter', function () {
       expect(stubs.putRecordBatch.firstCall.args[0].Records.length).to.eq(500);
     });
 
+    it('works multiple times', function () {
+      var stubs = stubFirehose(true);
+      var KinesisExporter = proxyquire('../../exporters/kinesisExporter.js', {
+        'aws-sdk': { Firehose: stubs.Firehose }
+      });
+      var exporter = new KinesisExporter({ region: 'oz', streamName: 'teststream' });
+
+      exporter.add('payload');
+      clock.tick(99);
+      expect(stubs.putRecordBatch.callCount).to.eq(0);
+      clock.tick(1);
+      expect(stubs.putRecordBatch.callCount).to.eq(1);
+      exporter.add('payload');
+      clock.tick(99);
+      expect(stubs.putRecordBatch.callCount).to.eq(1);
+      clock.tick(1);
+      expect(stubs.putRecordBatch.callCount).to.eq(2);
+      for (var i = 0; i < 499; i++) {
+        exporter.add('payload');
+      }
+      expect(stubs.putRecordBatch.callCount).to.eq(2);
+      exporter.add('payload');
+      expect(stubs.putRecordBatch.callCount).to.eq(3);
+      exporter.add('payload');
+      clock.tick(99);
+      expect(stubs.putRecordBatch.callCount).to.eq(3);
+      clock.tick(1);
+      expect(stubs.putRecordBatch.callCount).to.eq(4);
+      exporter.add('payload');
+      clock.tick(99);
+      expect(stubs.putRecordBatch.callCount).to.eq(4);
+      clock.tick(1);
+      expect(stubs.putRecordBatch.callCount).to.eq(5);
+    });
+
+    it('resets timer after send', function () {
+      var stubs = stubFirehose(true);
+      var KinesisExporter = proxyquire('../../exporters/kinesisExporter.js', {
+        'aws-sdk': { Firehose: stubs.Firehose }
+      });
+      var exporter = new KinesisExporter({ region: 'oz', streamName: 'teststream' });
+
+      for (var i = 0; i < 499; i++) {
+        exporter.add('payload');
+      }
+      clock.tick(99);
+      expect(stubs.putRecordBatch.callCount).to.eq(0);
+      exporter.add('payload');
+      expect(stubs.putRecordBatch.callCount).to.eq(1);
+      exporter.add('payload');
+      clock.tick(99);
+      expect(stubs.putRecordBatch.callCount).to.eq(1);
+      clock.tick(1);
+      expect(stubs.putRecordBatch.callCount).to.eq(2);
+    });
+
     it('retries batch at expected intervals', function () {
       var stubs = stubFirehose(false);
       var KinesisExporter = proxyquire('../../exporters/kinesisExporter.js', {

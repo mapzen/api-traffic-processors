@@ -59,6 +59,23 @@ describe('kinesisExporter', function () {
       expect(stubs.putRecordBatch.firstCall.args[0].Records.length).to.eq(500);
     });
 
+    it('sends correct number of records', function () {
+      var stubs = stubFirehose(true);
+      var KinesisExporter = proxyquire('../../exporters/kinesisExporter.js', {
+        'aws-sdk': { Firehose: stubs.Firehose }
+      });
+      var exporter = new KinesisExporter({ region: 'oz', streamName: 'teststream' });
+
+      for (var i = 0; i < 1200; i++) {
+        exporter.add('payload');
+      }
+      expect(stubs.putRecordBatch.firstCall.args[0].Records.length).to.eq(500);
+      expect(stubs.putRecordBatch.secondCall.args[0].Records.length).to.eq(500);
+      expect(stubs.putRecordBatch.callCount).to.eq(2);
+      clock.tick(100);
+      expect(stubs.putRecordBatch.thirdCall.args[0].Records.length).to.eq(200);
+    });
+
     it('works multiple times', function () {
       var stubs = stubFirehose(true);
       var KinesisExporter = proxyquire('../../exporters/kinesisExporter.js', {

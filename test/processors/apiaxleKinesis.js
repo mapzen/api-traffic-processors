@@ -6,7 +6,7 @@ var proxyquire = require('proxyquire');
 
 describe('apiaxleKinesis', function () {
   it('calls everything correctly', function (done) {
-    var exporteradd = sinon.stub().callsArg(1, null, {});
+    var exporteradd = sinon.stub();
     var exporter = sinon.stub().returns({ add: exporteradd });
     var parser = sinon.stub().returns('parsed');
     var formatter = sinon.stub().returns('formatted');

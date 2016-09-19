@@ -1,3 +1,7 @@
+0.1.10
+------
+- support vector-tiles 1.0
+
 0.1.9
 -----
 - stringify firehose errors

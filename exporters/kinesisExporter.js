@@ -31,7 +31,13 @@ module.exports = function (args) {
       };
       firehose.putRecordBatch(params, function (err, response) {
         if (err || response.FailedPutCount > 0) {
-          console.error('firehose error ' + (retries + 1) + ': ' + err + response);
+          try {
+            console.error('firehose error ' + (retries + 1) + ': ' +
+                          JSON.stringify(err) + ', ' + JSON.stringify(response));
+          } catch (e) {
+            // response was not convertable to json
+            console.error(e);
+          }
           if (retries < retryDelay.length) {
             setTimeout(sendBatch.bind(null, batch, retries + 1), retryDelay[retries]);
           }

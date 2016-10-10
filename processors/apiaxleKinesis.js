@@ -13,6 +13,7 @@ module.exports = function apiaxleKinesis(args) {
     var formattedPayload;
     payload = parser(hit);
     formattedPayload = formatter(payload);
-    exporter.add(formattedPayload, cb);
+    exporter.add(formattedPayload);
+    cb(null);
   };
 };

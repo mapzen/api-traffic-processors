@@ -1,171 +1,45 @@
 /* eslint-env mocha */
 /* eslint no-unused-expressions: 0, max-len: 0 */
+var fs = require('fs');
 var expect = require('chai').expect;
 
 var fastlyVectorParser = require('../../parsers/fastlyVectorParser.js');
 
+var examples = fs.readFileSync(__dirname + '/../fixtures/vectorexample.log').toString().split('\n');
+
 describe('fastlyVectorParser', function () {
-  it('parses pre-1.0 syntax without version', function () {
-    var line =
-      '<134>2016-09-20T19:21:00Z cache-jfk8145 vector-dev-logs-new[95219]: 200 8130 16 S3 vector.mapzen.com /osm/all/1/2/3.json?api_key=nicekey';
-
-    var expected = {
-      ts: new Date('2016-09-20T19:21:00Z'),
-      key: 'nicekey',
-      status: '200',
-      origin: 'fastly',
-      cacheHit: 'HIT',
-      size: '8130',
-      total_ms: '16',
-      server: 'S3',
-      path: '/osm/all/1/2/3.json?api_key=nicekey',
-      api: 'vector-tiles',
-      layer: 'all',
-      x: '2',
-      y: '3',
-      z: '1',
-      hostname: 'vector.mapzen.com',
-      format: 'json',
-      version: null
-    };
-
-    var parsed = fastlyVectorParser(line);
-    expect(parsed).to.deep.equal(expected);
+  it('works with example log file', function () {
+    examples.forEach(function (line) {
+      var parsed;
+      if (!line) return;
+      parsed = fastlyVectorParser(line);
+      try {
+        expect(parsed.ts).to.be.instanceof(Date);
+        expect(isFinite(parsed.ts)).to.be.true;
+        expect(parsed.status).to.have.length.above(0);
+        expect(parsed.payloadSize).to.not.be.undefined;
+        expect(parsed.method).to.not.be.undefined;
+        expect(parsed.uri).to.not.be.undefined;
+        expect(parsed.key).to.not.be.undefined;
+        expect(parsed.totalTime).to.not.be.undefined;
+        expect(parsed.firstByteTime).to.not.be.undefined;
+        expect(parsed.api).to.have.length.above(0);
+        expect(parsed.origin).to.not.be.undefined;
+        expect(parsed.server).to.be.oneOf(['fastly', 's3', 'tileserver']);
+      } catch (err) {
+        console.log(line);
+        console.log(parsed);
+        throw (err);
+      }
+    });
   });
 
-  it('parses pre-1.0 syntax with version', function () {
-    var line =
-      '<134>2016-09-20T19:21:01Z cache-jfk8128 vector-dev-logs-new[95219]: 200 114020 15 S3 vector.mapzen.com /osm/version/layer/z/x/y.fmt?api_key=nicekey';
-
-    var expected = {
-      ts: new Date('2016-09-20T19:21:01Z'),
-      key: 'nicekey',
-      status: '200',
-      origin: 'fastly',
-      cacheHit: 'HIT',
-      size: '114020',
-      total_ms: '15',
-      server: 'S3',
-      path: '/osm/version/layer/z/x/y.fmt?api_key=nicekey',
-      api: 'vector-tiles',
-      layer: 'layer',
-      x: 'x',
-      y: 'y',
-      z: 'z',
-      hostname: 'vector.mapzen.com',
-      format: 'fmt',
-      version: 'version'
-    };
-
-    var parsed = fastlyVectorParser(line);
-    expect(parsed).to.deep.equal(expected);
-  });
-
-  it('parses 1.0 syntax vector-tiles', function () {
-    var line =
-      '<134>2016-09-20T19:21:01Z cache-jfk8128 vector-dev-logs-new[95219]: 200 114020 15 S3 tile.mapzen.com /mapzen/vector/version/layer/z/x/y.fmt?api_key=nicekey';
-
-    var expected = {
-      ts: new Date('2016-09-20T19:21:01Z'),
-      key: 'nicekey',
-      status: '200',
-      origin: 'fastly',
-      cacheHit: 'HIT',
-      size: '114020',
-      total_ms: '15',
-      server: 'S3',
-      path: '/mapzen/vector/version/layer/z/x/y.fmt?api_key=nicekey',
-      api: 'vector-tiles',
-      layer: 'layer',
-      x: 'x',
-      y: 'y',
-      z: 'z',
-      hostname: 'tile.mapzen.com',
-      format: 'fmt',
-      version: 'version'
-    };
-
-    var parsed = fastlyVectorParser(line);
-    expect(parsed).to.deep.equal(expected);
-  });
-
-  it('parses 1.0 syntax terrain-tiles non-skadi layer', function () {
-    var line =
-      '<134>2016-09-20T19:21:01Z cache-jfk8128 vector-dev-logs-new[95219]: 200 114020 15 S3 tile.mapzen.com /mapzen/terrain/version/layer/z/x/y.fmt?api_key=nicekey';
-
-    var expected = {
-      ts: new Date('2016-09-20T19:21:01Z'),
-      key: 'nicekey',
-      status: '200',
-      origin: 'fastly',
-      cacheHit: 'HIT',
-      size: '114020',
-      total_ms: '15',
-      server: 'S3',
-      path: '/mapzen/terrain/version/layer/z/x/y.fmt?api_key=nicekey',
-      api: 'terrain-tiles',
-      layer: 'layer',
-      x: 'x',
-      y: 'y',
-      z: 'z',
-      hostname: 'tile.mapzen.com',
-      format: 'fmt',
-      version: 'version'
-    };
-
-    var parsed = fastlyVectorParser(line);
-    expect(parsed).to.deep.equal(expected);
-  });
-
-  it('parses 1.0 syntax terrain-tiles skadi layer', function () {
-    var line =
-      '<134>2016-09-20T19:21:01Z cache-jfk8128 vector-dev-logs-new[95219]: 200 114020 15 S3 tile.mapzen.com /mapzen/terrain/v1/skadi/N25/N25W136.hgt.gz?api_key=nicekey';
-
-    var expected = {
-      ts: new Date('2016-09-20T19:21:01Z'),
-      key: 'nicekey',
-      status: '200',
-      origin: 'fastly',
-      cacheHit: 'HIT',
-      size: '114020',
-      total_ms: '15',
-      server: 'S3',
-      path: '/mapzen/terrain/v1/skadi/N25/N25W136.hgt.gz?api_key=nicekey',
-      api: 'terrain-tiles',
-      layer: 'skadi',
-      x: -136,
-      y: '25',
-      z: null,
-      hostname: 'tile.mapzen.com',
-      format: 'hgt.gz',
-      version: 'v1'
-    };
-
-    var parsed = fastlyVectorParser(line);
-    expect(parsed).to.deep.equal(expected);
-  });
-
-  it("doesn't throw error when skadi latlng is bad", function () {
-    var line =
-      '<134>2016-09-20T19:21:01Z cache-jfk8128 vector-dev-logs-new[95219]: 200 114020 15 S3 tile.mapzen.com /mapzen/terrain/v1/skadi/N25/N25Z136.hgt.gz?api_key=nicekey';
-    expect(function () { fastlyVectorParser(line); }).to.not.throw(Error);
-  });
-
-  it('fills x, y, z as undefined for tilejson requests', function () {
-    var line =
-      '<134>2016-09-20T19:21:01Z cache-jfk8128 vector-dev-logs-new[95219]: 200 114020 15 S3 vector.mapzen.com /osm/tilejson/mapbox.json?api_key=nicekey';
-
-    var parsed = fastlyVectorParser(line);
-    expect(parsed.x).to.eq(undefined);
-    expect(parsed.y).to.eq(undefined);
-    expect(parsed.z).to.eq(undefined);
-
-    line =
-      '<134>2016-09-20T19:21:01Z cache-jfk8128 vector-dev-logs-new[95219]: 200 114020 15 S3 tile.mapzen.com /mapzen/vector/v1/tilejson/mapbox.json?api_key=nicekey';
-
-    parsed = fastlyVectorParser(line);
-    expect(parsed.x).to.eq(undefined);
-    expect(parsed.y).to.eq(undefined);
-    expect(parsed.z).to.eq(undefined);
+  it('sets server based on cache_hit and server headers', function () {
+    var fastlyline = '<134>2016-06-29T16:00:20Z cache-jfk1032 vector-dev-logs-new[514302]: 184.72.113.161 200 3969 GET /osm/all/1/1/1.mvt?api_key=vector-tiles-abcdefg HIT 175 0.175 Fastly';
+    var tileserverline = '<134>2016-06-29T16:00:20Z cache-jfk1032 vector-dev-logs-new[514302]: 184.72.113.161 200 3969 GET /osm/all/1/1/1.mvt?api_key=vector-tiles-abcdefg MISS 175 0.175 App';
+    var s3line = '<134>2016-06-29T16:00:20Z cache-jfk1032 vector-dev-logs-new[514302]: 184.72.113.161 200 3969 GET /osm/all/1/1/1.mvt?api_key=vector-tiles-abcdefg MISS 175 0.175 Fastly';
+    expect(fastlyVectorParser(fastlyline).server).to.eq('fastly');
+    expect(fastlyVectorParser(tileserverline).server).to.eq('tileserver');
+    expect(fastlyVectorParser(s3line).server).to.eq('s3');
   });
 });

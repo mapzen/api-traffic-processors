@@ -1,6 +1,6 @@
 {
   "name": "api-traffic-processors",
-  "version": "0.1.10",
+  "version": "0.1.9",
   "description": "package for processing api traffic from apiaxle and fastly",
   "main": "index.js",
   "dependencies": {

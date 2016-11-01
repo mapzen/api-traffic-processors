@@ -16,6 +16,7 @@ module.exports = function vectorTraffic(fields) {
     fsv.escapeField(fields.hostname, 100),
     fsv.escapeField(fields.api, 100),
     fsv.escapeField(fields.version, 100),
-    fsv.escapeField(fields.path, 100)
+    fsv.escapeField(fields.path, 100),
+    !!fields.is_xonacatl
   ].join(' ');
 };

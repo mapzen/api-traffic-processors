@@ -114,6 +114,7 @@ module.exports = function parse(line) {
   var server = fields[6];
   var hostname = fields[7];
   var path = fields[8];
+  var isXonacatl = fields[9] && fields[9] !== '(null)';
 
   var uri = new URI(path || '');
   var key = keyFromUri(uri);
@@ -124,7 +125,11 @@ module.exports = function parse(line) {
   } catch (err) {
     parsedPath = {};
   }
-
+  if (!parsedPath.api) {
+    // always default to vector-tiles service so something gets set if
+    // url parsing fails
+    parsedPath.api = 'vector-tiles';
+  }
 
   return {
     ts: new Date(timestamp),
@@ -132,8 +137,7 @@ module.exports = function parse(line) {
     key: key,
     status: status,
     origin: 'fastly',
-    cacheHit: server === 'App' ? 'MISS' : 'HIT',
-
+    cacheHit: (server === 'App' || server === 'Layers') ? 'MISS' : 'HIT',
     size: size,
     total_ms: totalMs,
     server: server,
@@ -144,6 +148,7 @@ module.exports = function parse(line) {
     z: parsedPath.z,
     hostname: hostname,
     format: parsedPath.format,
-    version: parsedPath.version
+    version: parsedPath.version,
+    is_xonacatl: isXonacatl
   };
 };

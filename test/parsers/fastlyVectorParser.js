@@ -7,7 +7,7 @@ var fastlyVectorParser = require('../../parsers/fastlyVectorParser.js');
 describe('fastlyVectorParser', function () {
   it('parses pre-1.0 syntax without version', function () {
     var line =
-      '<134>2016-09-20T19:21:00Z cache-jfk8145 vector-dev-logs-new[95219]: 200 8130 16 S3 vector.mapzen.com /osm/all/1/2/3.json?api_key=nicekey';
+      '<134>2016-09-20T19:21:00Z cache-jfk8145 vector-dev-logs-new[95219]: 200 8130 16 S3 vector.mapzen.com /osm/all/1/2/3.json?api_key=nicekey (null)';
 
     var expected = {
       ts: new Date('2016-09-20T19:21:00Z'),
@@ -26,7 +26,8 @@ describe('fastlyVectorParser', function () {
       z: '1',
       hostname: 'vector.mapzen.com',
       format: 'json',
-      version: null
+      version: null,
+      is_xonacatl: false
     };
 
     var parsed = fastlyVectorParser(line);
@@ -35,7 +36,7 @@ describe('fastlyVectorParser', function () {
 
   it('parses pre-1.0 syntax with version', function () {
     var line =
-      '<134>2016-09-20T19:21:01Z cache-jfk8128 vector-dev-logs-new[95219]: 200 114020 15 S3 vector.mapzen.com /osm/version/layer/z/x/y.fmt?api_key=nicekey';
+      '<134>2016-09-20T19:21:01Z cache-jfk8128 vector-dev-logs-new[95219]: 200 114020 15 S3 vector.mapzen.com /osm/version/layer/z/x/y.fmt?api_key=nicekey 1';
 
     var expected = {
       ts: new Date('2016-09-20T19:21:01Z'),
@@ -54,7 +55,8 @@ describe('fastlyVectorParser', function () {
       z: 'z',
       hostname: 'vector.mapzen.com',
       format: 'fmt',
-      version: 'version'
+      version: 'version',
+      is_xonacatl: true
     };
 
     var parsed = fastlyVectorParser(line);
@@ -63,7 +65,7 @@ describe('fastlyVectorParser', function () {
 
   it('parses 1.0 syntax vector-tiles', function () {
     var line =
-      '<134>2016-09-20T19:21:01Z cache-jfk8128 vector-dev-logs-new[95219]: 200 114020 15 S3 tile.mapzen.com /mapzen/vector/version/layer/z/x/y.fmt?api_key=nicekey';
+      '<134>2016-09-20T19:21:01Z cache-jfk8128 vector-dev-logs-new[95219]: 200 114020 15 S3 tile.mapzen.com /mapzen/vector/version/layer/z/x/y.fmt?api_key=nicekey (null)';
 
     var expected = {
       ts: new Date('2016-09-20T19:21:01Z'),
@@ -82,7 +84,8 @@ describe('fastlyVectorParser', function () {
       z: 'z',
       hostname: 'tile.mapzen.com',
       format: 'fmt',
-      version: 'version'
+      version: 'version',
+      is_xonacatl: false
     };
 
     var parsed = fastlyVectorParser(line);
@@ -91,7 +94,7 @@ describe('fastlyVectorParser', function () {
 
   it('parses 1.0 syntax terrain-tiles non-skadi layer', function () {
     var line =
-      '<134>2016-09-20T19:21:01Z cache-jfk8128 vector-dev-logs-new[95219]: 200 114020 15 S3 tile.mapzen.com /mapzen/terrain/version/layer/z/x/y.fmt?api_key=nicekey';
+      '<134>2016-09-20T19:21:01Z cache-jfk8128 vector-dev-logs-new[95219]: 200 114020 15 S3 tile.mapzen.com /mapzen/terrain/version/layer/z/x/y.fmt?api_key=nicekey (null)';
 
     var expected = {
       ts: new Date('2016-09-20T19:21:01Z'),
@@ -110,7 +113,8 @@ describe('fastlyVectorParser', function () {
       z: 'z',
       hostname: 'tile.mapzen.com',
       format: 'fmt',
-      version: 'version'
+      version: 'version',
+      is_xonacatl: false
     };
 
     var parsed = fastlyVectorParser(line);
@@ -119,7 +123,7 @@ describe('fastlyVectorParser', function () {
 
   it('parses 1.0 syntax terrain-tiles skadi layer', function () {
     var line =
-      '<134>2016-09-20T19:21:01Z cache-jfk8128 vector-dev-logs-new[95219]: 200 114020 15 S3 tile.mapzen.com /mapzen/terrain/v1/skadi/N25/N25W136.hgt.gz?api_key=nicekey';
+      '<134>2016-09-20T19:21:01Z cache-jfk8128 vector-dev-logs-new[95219]: 200 114020 15 S3 tile.mapzen.com /mapzen/terrain/v1/skadi/N25/N25W136.hgt.gz?api_key=nicekey (null)';
 
     var expected = {
       ts: new Date('2016-09-20T19:21:01Z'),
@@ -138,7 +142,8 @@ describe('fastlyVectorParser', function () {
       z: null,
       hostname: 'tile.mapzen.com',
       format: 'hgt.gz',
-      version: 'v1'
+      version: 'v1',
+      is_xonacatl: false
     };
 
     var parsed = fastlyVectorParser(line);

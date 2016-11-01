@@ -82,7 +82,7 @@ echo '{
           "filename": "kinesisExporter.js",
           "args": {
             "region": "'$region'",
-            "streamName": "tile_traffic_processing_'$1'"
+            "streamName": "tile_traffic_processing_v4_'$1'"
           }
         }
       }

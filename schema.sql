@@ -62,3 +62,12 @@ CREATE TABLE IF NOT EXISTS api_hits_day (
   status VARCHAR(256) ENCODE lzo,
   hits INTEGER ENCODE lzo
 );
+
+CREATE TABLE IF NOT EXISTS mobility_traffic (
+  ts TIMESTAMP SORTKEY ENCODE delta,
+  api VARCHAR(100) ENCODE lzo,
+  key VARCHAR(100) DISTKEY ENCODE lzo,
+  status VARCHAR(100) ENCODE lzo,
+  path VARCHAR(250) ENCODE lzo,
+  query VARCHAR(400) ENCODE lzo
+);

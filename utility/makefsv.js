@@ -1,3 +1,4 @@
+/* eslint global-require: 0 */
 var fs = require('fs');
 
 if (process.argv.length < 6) {

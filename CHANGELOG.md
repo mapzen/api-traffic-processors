@@ -1,3 +1,7 @@
+0.1.11
+------
+- apiaxle send to mobility_traffic
+
 0.1.10
 ------
 - support vector-tiles 1.0

@@ -25,7 +25,7 @@ describe('apiaxleParser', function () {
       origin: 'apiaxle',
       cacheHit: null,
       pathname: '/index.html',
-      search: '?api_key=1234'
+      search: 'api_key=1234'
     });
   });
 
@@ -38,7 +38,7 @@ describe('apiaxleParser', function () {
       origin: 'apiaxle',
       cacheHit: null,
       pathname: '/users',
-      search: '?api_key=1234'
+      search: 'api_key=1234'
     });
   });
 
@@ -51,7 +51,7 @@ describe('apiaxleParser', function () {
       origin: 'apiaxle',
       cacheHit: null,
       pathname: '/users',
-      search: '?api_key=1234'
+      search: 'api_key=1234'
     });
   });
 
@@ -64,7 +64,7 @@ describe('apiaxleParser', function () {
       origin: 'apiaxle',
       cacheHit: null,
       pathname: '/index.html',
-      search: '?api_key=1234'
+      search: 'api_key=1234'
     });
   });
 });

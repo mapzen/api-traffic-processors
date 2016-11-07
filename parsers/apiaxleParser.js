@@ -11,6 +11,6 @@ module.exports = function parse(hit) {
     origin: 'apiaxle',
     cacheHit: null,
     pathname: hit.parsed_url && hit.parsed_url.pathname,
-    search: hit.parsed_url && decodeURIComponent(hit.parsed_url.search)
+    search: hit.parsed_url && decodeURIComponent(hit.parsed_url.search).substring(1)
   };
 };

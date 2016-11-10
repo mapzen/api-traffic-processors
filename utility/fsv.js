@@ -12,8 +12,9 @@ function escapeField(field, length) {
   if (field === '' || field === undefined || field === null) return '\\N';
   var escaped = String(field).substring(0, length)
                              .replace(/\\/g, '\\\\') // escape backslashes
-                             .replace(/ /g, '\\ ') // escape spaces
-                             .substring(0, length); // make sure escaping didn't put us over
+                             .replace(/ /g, '\\ '); // escape spaces
+  // make sure escaping didn't put us over
+  escaped = new Buffer(escaped).toString('utf8', 0, length);
 
   // make sure the last substring didn't leave a trailing backslash
   var endingBackslashes = escaped.match(/\\*$/)[0];

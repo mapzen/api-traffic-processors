@@ -1,6 +1,12 @@
 module.exports = function parse(hit) {
   var api = hit.api_name;
   if (api === 'pelias-search') api = 'search';
+  var searchstring = null;
+  try {
+    searchstring = hit.parsed_url && decodeURIComponent(hit.parsed_url.search);
+  } catch (err) {
+    // let searchstring be null because we can't decode parsed_url.search
+  }
   return {
     ts: new Date(),
     api: api,
@@ -11,6 +17,6 @@ module.exports = function parse(hit) {
     origin: 'apiaxle',
     cacheHit: null,
     pathname: hit.parsed_url && hit.parsed_url.pathname,
-    search: hit.parsed_url && decodeURIComponent(hit.parsed_url.search)
+    search: searchstring
   };
 };

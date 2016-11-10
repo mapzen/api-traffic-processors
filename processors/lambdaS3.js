@@ -4,8 +4,16 @@ var AWS = require('aws-sdk');
 var s3 = new AWS.S3();
 
 function parseS3EventRecord(record) {
-  var key = decodeURIComponent(record.s3.object.key.replace(/\+/g, ' '));
-  var keyComponents = key.split('/');
+  var key;
+  var keyComponents;
+  try {
+    key = decodeURIComponent(record.s3.object.key.replace(/\+/g, ' '));
+    keyComponents = key.split('/');
+  } catch (err) {
+    // couldn't parse uricomponent
+    key = null;
+    keyComponents = [];
+  }
   return {
     bucket: record.s3.bucket.name,
     key: key,

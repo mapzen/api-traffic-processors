@@ -67,4 +67,8 @@ describe('apiaxleParser', function () {
       search: '?api_key=1234'
     });
   });
+
+  it('works with partial unicode searchstrings', function () {
+    expect(function () { apiaxleParser(examples.badsearch); }).to.not.throw(Error);
+  });
 });

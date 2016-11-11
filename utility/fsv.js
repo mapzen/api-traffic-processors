@@ -8,13 +8,21 @@ function cleanInt(int, bytes) {
   return x;
 }
 
-function escapeField(field, length) {
+function escapeField(field, maxlen) {
   if (field === '' || field === undefined || field === null) return '\\N';
-  var escaped = String(field).substring(0, length)
+  var escaped = String(field).substring(0, maxlen)
                              .replace(/\\/g, '\\\\') // escape backslashes
                              .replace(/ /g, '\\ '); // escape spaces
-  // make sure escaping didn't put us over
-  escaped = new Buffer(escaped).toString('utf8', 0, length);
+
+  var bytes = new Buffer(escaped, 'utf8');
+  if (bytes.length > maxlen) {
+    escaped = bytes.toString('utf8', 0, maxlen);
+
+    // check we didn't leave broken unicode at the end
+    if (new Buffer(escaped, 'utf8').length > maxlen) {
+      escaped = escaped.substring(0, escaped.length - 1);
+    }
+  }
 
   // make sure the last substring didn't leave a trailing backslash
   var endingBackslashes = escaped.match(/\\*$/)[0];

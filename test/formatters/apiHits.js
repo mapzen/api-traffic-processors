@@ -22,10 +22,16 @@ describe('apiHits', function () {
     expect(apiHits(payload).split(' ')[0]).to.equal('1970-01-01T00:00:00.000Z');
   });
 
-  it('doesnt allow fields to have backslashes except for nulls as \\N', function () {
+  it('backslashes backslashes', function () {
     var payload = { ts: new Date(), api: 'test\\', key: 'k',
                     status: 's', origin: 'a', cacheHit: null };
-    expect(apiHits(payload).match(/\\/)).to.be.null;
+    expect(apiHits(payload).split(' ')[1]).to.equal('test\\\\');
+  });
+
+  it('backslashes spaces', function () {
+    var payload = { ts: new Date(), api: 'test ', key: 'k',
+                    status: 's', origin: 'a', cacheHit: null };
+    expect(apiHits(payload)).to.contain('test\\  k');
   });
 
   it('doesnt allow fields to be more than 256 characters', function () {
@@ -35,13 +41,13 @@ describe('apiHits', function () {
     }
     var payload = { ts: new Date(), status: status };
     apiHits(payload).split(' ').forEach(function (field) {
-      expect(field.length).to.be.below(257);
+      expect(new Buffer(field).length).to.be.below(257);
     });
   });
 
   it('handles fields that are only backslashes correctly', function () {
     var payload = { ts: new Date(0), key: '\\' };
-    expect(apiHits(payload)).to.equal('1970-01-01T00:00:00.000Z \\N \\N \\N \\N false');
+    expect(apiHits(payload)).to.equal('1970-01-01T00:00:00.000Z \\N \\\\ \\N \\N false');
   });
 
   describe('duplicate column', function () {

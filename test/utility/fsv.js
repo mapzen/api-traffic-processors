@@ -8,7 +8,8 @@ describe('fsv', function () {
   describe('escapeField', function () {
     it('limits size', function () {
       jsc.assert(jsc.forall(jsc.string, function (s) {
-        return fsv.escapeField(s, 5).length <= 5;
+        var escaped = fsv.escapeField(s, 5);
+        return new Buffer(escaped).length <= 5;
       }), { tests: 10000 });
     });
 

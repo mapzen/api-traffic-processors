@@ -1,19 +1,12 @@
-function clean(field) {
-  if (field === '' || field === undefined || field === null) return '\\N';
-  var cleaned = String(field).replace(/\\/g, '')
-                             .replace(/ /g, '%20')
-                             .substring(0, 256);
-  if (cleaned === '') return '\\N';
-  return cleaned;
-}
+var fsv = require('../utility/fsv.js');
 
 module.exports = function apiHits(fields) {
   return [
     fields.ts.toISOString(),
-    fields.api,
-    fields.key,
-    fields.status,
-    fields.origin,
+    fsv.escapeField(fields.api, 256),
+    fsv.escapeField(fields.key, 256),
+    fsv.escapeField(fields.status, 256),
+    fsv.escapeField(fields.origin, 256),
     fields.cacheHit === 'MISS'
-  ].map(clean).join(' ');
+  ].join(' ');
 };

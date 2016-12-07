@@ -57,5 +57,6 @@ CREATE TABLE IF NOT EXISTS mobility_traffic (
 CREATE TABLE IF NOT EXISTS keys (
   key VARCHAR(100) SORTKEY ENCODE lzo,
   developer_id INT4 DISTKEY ENCODE lzo,
-  developer_nickname VARCHAR(100) ENCODE lzo
+  developer_nickname VARCHAR(100) ENCODE lzo,
+  mapzen BOOLEAN
 );

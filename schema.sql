@@ -45,11 +45,30 @@ CREATE TABLE IF NOT EXISTS api_hits_day (
   hits INTEGER ENCODE lzo
 );
 
+CREATE TABLE IF NOT EXISTS api_hits_day2 (
+  ts TIMESTAMP SORTKEY ENCODE delta,
+  api VARCHAR(256) ENCODE lzo,
+  key VARCHAR(256) DISTKEY ENCODE lzo,
+  status VARCHAR(256) ENCODE lzo,
+  source VARCHAR(256) ENCODE lzo,
+  hits INTEGER ENCODE lzo
+);
+
 CREATE TABLE IF NOT EXISTS api_hits_hour (
   ts TIMESTAMP SORTKEY ENCODE delta,
   api VARCHAR(256) ENCODE lzo,
   key VARCHAR(256) DISTKEY ENCODE lzo,
   status VARCHAR(256) ENCODE lzo,
+  source VARCHAR(256) ENCODE lzo,
+  hits INTEGER ENCODE lzo
+);
+
+CREATE TABLE IF NOT EXISTS api_hits_minute (
+  ts TIMESTAMP SORTKEY ENCODE delta,
+  api VARCHAR(256) ENCODE lzo,
+  key VARCHAR(256) DISTKEY ENCODE lzo,
+  status VARCHAR(256) ENCODE lzo,
+  source VARCHAR(256) ENCODE lzo,
   hits INTEGER ENCODE lzo
 );
 
@@ -67,4 +86,14 @@ CREATE TABLE IF NOT EXISTS keys (
   developer_id INT4 DISTKEY ENCODE lzo,
   developer_nickname VARCHAR(100) ENCODE lzo,
   mapzen BOOLEAN
+);
+
+CREATE TABLE IF NOT EXISTS hourly_project_costs (
+  stack VARCHAR(256) DISTKEY ENCODE lzo,
+  type VARCHAR(256) ENCODE lzo,
+  region VARCHAR(256) ENCODE lzo,
+  date TIMESTAMP SORTKEY ENCODE delta,
+  cost FLOAT4,
+  quantity FLOAT4,
+  prepaid FLOAT4
 );

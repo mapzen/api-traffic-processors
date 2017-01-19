@@ -24,6 +24,7 @@ module.exports = function parse(line) {
     totalTime: totalTime,
     firstByteTime: Number(firstByteSecs) * 1000,
     api: 'search',
-    origin: 'fastly'
+    origin: 'fastly',
+    duplicate: cacheHit === 'MISS'
   };
 };

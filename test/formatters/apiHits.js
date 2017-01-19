@@ -51,10 +51,10 @@ describe('apiHits', function () {
   });
 
   describe('duplicate column', function () {
-    it('checks for cache misses', function () {
-      var payload = { ts: new Date(), cacheHit: 'HIT' };
+    it('checks for duplicate column', function () {
+      var payload = { ts: new Date(), duplicate: false };
       expect(apiHits(payload).split(' ')[5]).to.equal('false');
-      payload = { ts: new Date(), cacheHit: 'MISS' };
+      payload = { ts: new Date(), duplicate: true };
       expect(apiHits(payload).split(' ')[5]).to.equal('true');
     });
   });

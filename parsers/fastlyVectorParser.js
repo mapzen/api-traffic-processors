@@ -149,6 +149,7 @@ module.exports = function parse(line) {
     hostname: hostname,
     format: parsedPath.format,
     version: parsedPath.version,
-    is_xonacatl: isXonacatl
+    is_xonacatl: isXonacatl,
+    duplicate: server === 'App' || isXonacatl
   };
 };

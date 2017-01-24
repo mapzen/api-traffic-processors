@@ -18,8 +18,8 @@ module.exports = function parse(hit) {
             ? hit.error.name
             : hit.status_code,
     origin: 'apiaxle',
-    cacheHit: null,
     pathname: hit.parsed_url && hit.parsed_url.pathname,
-    search: searchstring
+    search: searchstring,
+    duplicate: false
   };
 };

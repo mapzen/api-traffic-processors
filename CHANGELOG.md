@@ -1,3 +1,8 @@
+0.1.12
+------
+- support pelias-autocomplete
+- stop renaming pelias-search to search
+
 0.1.11
 ------
 - apiaxle send to mobility_traffic

@@ -1,6 +1,5 @@
 module.exports = function parse(hit) {
   var api = hit.api_name;
-  if (api === 'pelias-search') api = 'search';
   var searchstring = null;
   try {
     searchstring = hit.parsed_url && decodeURIComponent(hit.parsed_url.search);

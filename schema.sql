@@ -18,24 +18,6 @@ CREATE TABLE IF NOT EXISTS pelias_traffic_v2 (date TIMESTAMP SORTKEY ENCODE delt
   first_byte_ms INTEGER ENCODE lzo
 );
 
-CREATE TABLE IF NOT EXISTS tile_traffic_v3 (
-    date TIMESTAMP SORTKEY ENCODE delta,
-    size INTEGER ENCODE lzo,
-    layer VARCHAR(100) ENCODE lzo,
-    x INTEGER ENCODE lzo,
-    y INTEGER ENCODE lzo,
-    z SMALLINT ENCODE lzo,
-    format VARCHAR(100) ENCODE lzo,
-    api_key VARCHAR(100) DISTKEY ENCODE lzo,
-    status SMALLINT ENCODE lzo,
-    total_ms INTEGER ENCODE lzo,
-    server VARCHAR(100) ENCODE lzo,
-    host VARCHAR(100) ENCODE lzo,
-    service VARCHAR(100) ENCODE lzo,
-    version VARCHAR(100) ENCODE lzo,
-    path VARCHAR(100) ENCODE lzo
-);
-
 CREATE TABLE IF NOT EXISTS tile_traffic_v4 (
     date TIMESTAMP SORTKEY ENCODE delta,
     size INTEGER ENCODE lzo,
@@ -63,6 +45,33 @@ CREATE TABLE IF NOT EXISTS api_hits_day (
   hits INTEGER ENCODE lzo
 );
 
+CREATE TABLE IF NOT EXISTS api_hits_day2 (
+  ts TIMESTAMP SORTKEY ENCODE delta,
+  api VARCHAR(256) ENCODE lzo,
+  key VARCHAR(256) DISTKEY ENCODE lzo,
+  status VARCHAR(256) ENCODE lzo,
+  source VARCHAR(256) ENCODE lzo,
+  hits INTEGER ENCODE lzo
+);
+
+CREATE TABLE IF NOT EXISTS api_hits_hour (
+  ts TIMESTAMP SORTKEY ENCODE delta,
+  api VARCHAR(256) ENCODE lzo,
+  key VARCHAR(256) DISTKEY ENCODE lzo,
+  status VARCHAR(256) ENCODE lzo,
+  source VARCHAR(256) ENCODE lzo,
+  hits INTEGER ENCODE lzo
+);
+
+CREATE TABLE IF NOT EXISTS api_hits_minute (
+  ts TIMESTAMP SORTKEY ENCODE delta,
+  api VARCHAR(256) ENCODE lzo,
+  key VARCHAR(256) DISTKEY ENCODE lzo,
+  status VARCHAR(256) ENCODE lzo,
+  source VARCHAR(256) ENCODE lzo,
+  hits INTEGER ENCODE lzo
+);
+
 CREATE TABLE IF NOT EXISTS mobility_traffic (
   ts TIMESTAMP SORTKEY ENCODE delta,
   api VARCHAR(100) ENCODE lzo,
@@ -70,4 +79,21 @@ CREATE TABLE IF NOT EXISTS mobility_traffic (
   status VARCHAR(100) ENCODE lzo,
   path VARCHAR(250) ENCODE lzo,
   query VARCHAR(400) ENCODE lzo
+);
+
+CREATE TABLE IF NOT EXISTS keys (
+  key VARCHAR(100) SORTKEY ENCODE lzo,
+  developer_id INT4 DISTKEY ENCODE lzo,
+  developer_nickname VARCHAR(100) ENCODE lzo,
+  mapzen BOOLEAN
+);
+
+CREATE TABLE IF NOT EXISTS hourly_project_costs (
+  stack VARCHAR(256) DISTKEY ENCODE lzo,
+  type VARCHAR(256) ENCODE lzo,
+  region VARCHAR(256) ENCODE lzo,
+  date TIMESTAMP SORTKEY ENCODE delta,
+  cost FLOAT4,
+  quantity FLOAT4,
+  prepaid FLOAT4
 );

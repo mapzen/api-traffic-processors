@@ -7,6 +7,6 @@ module.exports = function apiHits(fields) {
     fsv.escapeField(fields.key, 256),
     fsv.escapeField(fields.status, 256),
     fsv.escapeField(fields.origin, 256),
-    fields.cacheHit === 'MISS'
+    !!fields.duplicate
   ].join(' ');
 };

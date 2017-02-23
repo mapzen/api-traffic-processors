@@ -27,7 +27,8 @@ describe('fastlyVectorParser', function () {
       hostname: 'vector.mapzen.com',
       format: 'json',
       version: null,
-      is_xonacatl: false
+      is_xonacatl: false,
+      duplicate: false
     };
 
     var parsed = fastlyVectorParser(line);
@@ -56,7 +57,8 @@ describe('fastlyVectorParser', function () {
       hostname: 'vector.mapzen.com',
       format: 'fmt',
       version: 'version',
-      is_xonacatl: true
+      is_xonacatl: true,
+      duplicate: true
     };
 
     var parsed = fastlyVectorParser(line);
@@ -85,7 +87,8 @@ describe('fastlyVectorParser', function () {
       hostname: 'tile.mapzen.com',
       format: 'fmt',
       version: 'version',
-      is_xonacatl: false
+      is_xonacatl: false,
+      duplicate: false
     };
 
     var parsed = fastlyVectorParser(line);
@@ -114,7 +117,8 @@ describe('fastlyVectorParser', function () {
       hostname: 'tile.mapzen.com',
       format: 'fmt',
       version: 'version',
-      is_xonacatl: false
+      is_xonacatl: false,
+      duplicate: false
     };
 
     var parsed = fastlyVectorParser(line);
@@ -143,7 +147,8 @@ describe('fastlyVectorParser', function () {
       hostname: 'tile.mapzen.com',
       format: 'hgt.gz',
       version: 'v1',
-      is_xonacatl: false
+      is_xonacatl: false,
+      duplicate: false
     };
 
     var parsed = fastlyVectorParser(line);

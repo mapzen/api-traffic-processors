@@ -13,6 +13,10 @@ module.exports = function parse(line) {
   var firstByteSecs = fields[10];
   var uri = new URI(fullPath);
 
+  var api = fullPath.match(/^\/v[0-9]+\/autocomplete/)
+            ? 'pelias-autocomplete'
+            : 'pelias-search';
+
   return {
     ts: new Date(timestamp),
     status: status,
@@ -23,7 +27,8 @@ module.exports = function parse(line) {
     cacheHit: cacheHit,
     totalTime: totalTime,
     firstByteTime: Number(firstByteSecs) * 1000,
-    api: 'search',
-    origin: 'fastly'
+    api: api,
+    origin: 'fastly',
+    duplicate: cacheHit === 'MISS'
   };
 };

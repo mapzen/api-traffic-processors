@@ -89,3 +89,18 @@ CREATE TABLE IF NOT EXISTS hourly_project_costs (
   quantity FLOAT4,
   prepaid FLOAT4
 );
+
+CREATE TABLE IF NOT EXISTS reservations (
+  region VARCHAR(100),
+  type VARCHAR(100),
+  num INT2,
+  prepaid FLOAT4,
+  starttime TIMESTAMP,
+  endtime TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS running_instances (
+  region VARCHAR(100),
+  type VARCHAR(100),
+  num INT2
+);

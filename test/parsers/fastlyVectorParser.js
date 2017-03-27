@@ -28,7 +28,8 @@ describe('fastlyVectorParser', function () {
       format: 'json',
       version: null,
       is_xonacatl: false,
-      duplicate: false
+      duplicate: false,
+      tilesize: undefined
     };
 
     var parsed = fastlyVectorParser(line);
@@ -58,7 +59,8 @@ describe('fastlyVectorParser', function () {
       format: 'fmt',
       version: 'version',
       is_xonacatl: true,
-      duplicate: true
+      duplicate: true,
+      tilesize: undefined
     };
 
     var parsed = fastlyVectorParser(line);
@@ -88,7 +90,39 @@ describe('fastlyVectorParser', function () {
       format: 'fmt',
       version: 'version',
       is_xonacatl: false,
-      duplicate: false
+      duplicate: false,
+      tilesize: null
+    };
+
+    var parsed = fastlyVectorParser(line);
+    expect(parsed).to.deep.equal(expected);
+  });
+
+  it('parses 1.0 syntax vector-tiles with tilesize specifier', function () {
+    var line =
+      '<134>2017-03-27T14:38:22Z cache-iad2129 vector-dev-logs-new[94020]: 200 821513 0 Fastly tile.dev.mapzen.com /mapzen/vector/v1/512/all/1/1/1.json?api_key=mapzen-testing (null)';
+
+    var expected = {
+      ts: new Date('2017-03-27T14:38:22Z'),
+      key: 'mapzen-testing',
+      status: '200',
+      origin: 'fastly',
+      cacheHit: 'HIT',
+      size: '821513',
+      total_ms: '0',
+      server: 'Fastly',
+      path: '/mapzen/vector/v1/512/all/1/1/1.json?api_key=mapzen-testing',
+      api: 'vector-tiles',
+      layer: 'all',
+      x: '1',
+      y: '1',
+      z: '1',
+      hostname: 'tile.dev.mapzen.com',
+      format: 'json',
+      version: 'v1',
+      is_xonacatl: false,
+      duplicate: false,
+      tilesize: '512'
     };
 
     var parsed = fastlyVectorParser(line);
@@ -118,7 +152,8 @@ describe('fastlyVectorParser', function () {
       format: 'fmt',
       version: 'version',
       is_xonacatl: false,
-      duplicate: false
+      duplicate: false,
+      tilesize: undefined
     };
 
     var parsed = fastlyVectorParser(line);
@@ -148,7 +183,8 @@ describe('fastlyVectorParser', function () {
       format: 'hgt.gz',
       version: 'v1',
       is_xonacatl: false,
-      duplicate: false
+      duplicate: false,
+      tilesize: undefined
     };
 
     var parsed = fastlyVectorParser(line);

@@ -34,7 +34,8 @@ CREATE TABLE IF NOT EXISTS tile_traffic_v4 (
     service VARCHAR(100) ENCODE lzo,
     version VARCHAR(100) ENCODE lzo,
     path VARCHAR(100) ENCODE lzo,
-    is_xonacatl BOOLEAN
+    is_xonacatl BOOLEAN,
+    tilesize VARCHAR(100) ENCODE lzo
 );
 
 CREATE TABLE IF NOT EXISTS api_hits_day (

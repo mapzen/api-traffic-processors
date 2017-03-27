@@ -8,7 +8,8 @@ function parsePath(hostname, path) {
 
   var pathParts;
   var version;
-  var last;
+  var lastMatch;
+  var layer;
 
   if (hostname.substring(0, 6) === 'vector') {
     // path = /osm/layer/z/x/y.fmt or /osm/version/layer/z/x/y.fmt
@@ -23,52 +24,73 @@ function parsePath(hostname, path) {
       return {};
     }
     // pathParts = [layer,z,x,y.fmt]
-    last = pathParts[3].match(/^([^.]*)\.(.*)/);
+    lastMatch = pathParts[3].match(/^([^.]*)\.(.*)/);
     return {
       api: 'vector-tiles',
       layer: pathParts[0],
       z: pathParts[1],
       x: pathParts[2],
-      y: last[1],
-      format: last[2],
+      y: lastMatch[1],
+      format: lastMatch[2],
       version: version
     };
   } else if (hostname.substring(0, 4) === 'tile') {
     // /mapzen/vector/v1/all/1/1/1.mvt
+    // /mapzen/vector/v1/water,roads,buildings/1/1/1.mvt
+    // /mapzen/vector/v1/512/all/1/1/1.mvt
+    // /mapzen/vector/v1/256/all/1/1/1.mvt
     // /mapzen/terrain/v1/normal/0/0/0.png
     // /mapzen/terrain/v1/skadi/N25/N25W136.hgt.gz
     pathParts = path.split('/');
+
     var api = pathParts[2];
     version = pathParts[3];
-    var layer = pathParts[4];
+
     if (api === 'vector') {
-      last = pathParts[7].match(/^([^.]*)\.(.*)/);
+      // servicePathParts is meant to capture the url path after the
+      // optional tilesize specifier
+      // /all/3/2/2.mvt
+      // [ "all", "3", "2", "2.mvt" ]
+      var servicePathParts;
+      var tilesize = null;
+
+      if (pathParts[4] === '256' || pathParts[4] === '512') {
+        tilesize = pathParts[4];
+        servicePathParts = pathParts.slice(5);
+      } else {
+        servicePathParts = pathParts.slice(4);
+      }
+      layer = servicePathParts[0];
+
+      lastMatch = servicePathParts[3].match(/^([^.]*)\.(.*)/);
       return {
         api: 'vector-tiles',
         layer: layer,
-        z: pathParts[5],
-        x: pathParts[6],
-        y: last[1],
-        format: last[2],
-        version: version
+        z: servicePathParts[1],
+        x: servicePathParts[2],
+        y: lastMatch[1],
+        format: lastMatch[2],
+        version: version,
+        tilesize: tilesize
       };
     } else if (api === 'terrain') {
+      layer = pathParts[4];
       if (layer !== 'skadi') {
         // /mapzen/terrain/v1/normal/0/0/0.png
-        last = pathParts[7].match(/^([^.]*)\.(.*)/);
+        lastMatch = pathParts[7].match(/^([^.]*)\.(.*)/);
         return {
           api: 'terrain-tiles',
           layer: layer,
           z: pathParts[5],
           x: pathParts[6],
-          y: last[1],
-          format: last[2],
+          y: lastMatch[1],
+          format: lastMatch[2],
           version: version
         };
       } else { // layer === 'skadi'
         // /mapzen/terrain/v1/skadi/N25/N25W136.hgt.gz
-        last = pathParts[6].match(/^([^.]*)\.(.*)/);
-        var filename = last[1];
+        lastMatch = pathParts[6].match(/^([^.]*)\.(.*)/);
+        var filename = lastMatch[1];
 
         var latlngMatch = filename.match(/^([NS])(\d{2})([EW])(\d{3})$/);
         if (latlngMatch.length !== 5) return {};
@@ -82,7 +104,7 @@ function parsePath(hostname, path) {
           z: null,
           x: lng,
           y: lat,
-          format: last[2],
+          format: lastMatch[2],
           version: version
         };
       }
@@ -150,6 +172,7 @@ module.exports = function parse(line) {
     format: parsedPath.format,
     version: parsedPath.version,
     is_xonacatl: isXonacatl,
-    duplicate: server === 'App' || isXonacatl
+    duplicate: server === 'App' || isXonacatl,
+    tilesize: parsedPath.tilesize
   };
 };

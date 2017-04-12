@@ -78,7 +78,8 @@ CREATE TABLE IF NOT EXISTS keys (
   developer_id INT4 DISTKEY ENCODE lzo,
   developer_nickname VARCHAR(100) ENCODE lzo,
   email VARCHAR(256) ENCODE lzo,
-  mapzen BOOLEAN
+  mapzen BOOLEAN,
+  account_id INT4 ENCODE lzo
 );
 
 CREATE TABLE IF NOT EXISTS hourly_project_costs (
@@ -104,4 +105,29 @@ CREATE TABLE IF NOT EXISTS running_instances (
   region VARCHAR(100),
   type VARCHAR(100),
   num INT2
+);
+
+CREATE TABLE IF NOT EXISTS shutoff_sync (
+  key VARCHAR(256) DISTKEY ENCODE lzo,
+  service VARCHAR(256) ENCODE lzo,
+  shutoff BOOLEAN,
+  updated_at TIMESTAMP ENCODE lzo
+);
+
+CREATE TABLE IF NOT EXISTS custom_pricing (
+  account_id INT4 DISTKEY ENCODE lzo,
+  service VARCHAR(256) ENCODE lzo,
+  free_hits INT4 ENCODE lzo,
+  cpm DECIMAL(15,5) ENCODE lzo
+);
+
+CREATE TABLE IF NOT EXISTS services (
+  service VARCHAR(256) ENCODE lzo,
+  free_hits INT4 ENCODE lzo,
+  cpm DECIMAL(15,5) ENCODE lzo
+);
+
+CREATE TABLE IF NOT EXISTS spending_limits (
+  account_id INT4 DISTKEY ENCODE lzo,
+  spending_limit DECIMAL(15,5)
 );

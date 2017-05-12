@@ -127,7 +127,20 @@ CREATE TABLE IF NOT EXISTS services (
   cpm DECIMAL(15,5) ENCODE lzo
 );
 
-CREATE TABLE IF NOT EXISTS spending_limits (
+CREATE TABLE IF NOT EXISTS service_rates (
+  slug VARCHAR(256) ENCODE lzo,
   account_id INT4 DISTKEY ENCODE lzo,
-  spending_limit DECIMAL(15,5)
+  free_hits INT4 ENCODE lzo,
+  cpm DECIMAL(15,5) ENCODE lzo
+);
+
+CREATE TABLE IF NOT EXISTS accounts (
+  id INT4 DISTKEY ENCODE lzo,
+  plan VARCHAR(256) ENCODE lzo,
+  state VARCHAR(256) ENCODE lzo,
+  spending_limit DECIMAL(15,5) ENCODE lzo
+);
+
+CREATE TABLE IF NOT EXISTS requests_last_sync (
+  last_sync TIMESTAMP ENCODE lzo
 );

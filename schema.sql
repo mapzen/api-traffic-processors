@@ -128,10 +128,13 @@ CREATE TABLE IF NOT EXISTS services (
 );
 
 CREATE TABLE IF NOT EXISTS service_rates (
+  id INT4 DISTKEY ENCODE lzo,
   slug VARCHAR(256) ENCODE lzo,
-  account_id INT4 DISTKEY ENCODE lzo,
-  free_hits INT4 ENCODE lzo,
-  cpm DECIMAL(15,5) ENCODE lzo
+  account_id INT4 ENCODE lzo,
+  free INT4 ENCODE lzo,
+  cpm DECIMAL(15,5) ENCODE lzo,
+  starts_at TIMESTAMP ENCODE lzo,
+  ends_at TIMESTAMP ENCODE lzo
 );
 
 CREATE TABLE IF NOT EXISTS accounts (

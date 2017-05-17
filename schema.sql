@@ -114,19 +114,6 @@ CREATE TABLE IF NOT EXISTS shutoff_sync (
   updated_at TIMESTAMP ENCODE lzo
 );
 
-CREATE TABLE IF NOT EXISTS custom_pricing (
-  account_id INT4 DISTKEY ENCODE lzo,
-  service VARCHAR(256) ENCODE lzo,
-  free_hits INT4 ENCODE lzo,
-  cpm DECIMAL(15,5) ENCODE lzo
-);
-
-CREATE TABLE IF NOT EXISTS services (
-  service VARCHAR(256) ENCODE lzo,
-  free_hits INT4 ENCODE lzo,
-  cpm DECIMAL(15,5) ENCODE lzo
-);
-
 CREATE TABLE IF NOT EXISTS service_rates (
   id INT4 DISTKEY ENCODE lzo,
   slug VARCHAR(256) ENCODE lzo,

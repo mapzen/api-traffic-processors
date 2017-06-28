@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS running_instances (
   num INT2
 );
 
-CREATE TABLE IF NOT EXISTS shutoff_sync (
+CREATE TABLE IF NOT EXISTS shutoffs_sync (
   key VARCHAR(256) DISTKEY ENCODE lzo,
   service VARCHAR(256) ENCODE lzo,
   shutoff BOOLEAN,

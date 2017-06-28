@@ -1,3 +1,7 @@
+0.1.13
+------
+- track isochrone and optimized_route
+
 0.1.12
 ------
 - support pelias-autocomplete

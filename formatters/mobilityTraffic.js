@@ -1,6 +1,6 @@
 var fsv = require('../utility/fsv.js');
 
-module.exports = function vectorTraffic(fields) {
+module.exports = function mobilityTraffic(fields) {
   return [
     fields.ts.toISOString(),
     fsv.escapeField(fields.api, 100),

@@ -20,7 +20,9 @@ module.exports = function apiaxleKinesis(args) {
 
     if (payload.api === 'valhalla' ||
         payload.api === 'elevation' ||
-        payload.api === 'matrix') {
+        payload.api === 'matrix' ||
+        payload.api === 'isochrone' ||
+        payload.api === 'optimized-route') {
       var mobility_traffic_payload = formatter.mobility_traffic(payload);
       exporter.mobility_traffic.add(mobility_traffic_payload);
     }

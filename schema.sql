@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS discounts (
   account_id INT4 DISTKEY ENCODE zstd,
   service_id INT4 ENCODE zstd,
   name VARCHAR(256) ENCODE zstd,
-  percent cpm DECIMAL(6,3) ENCODE zstd,
+  percentage DECIMAL(6,3) ENCODE zstd,
   starts_at TIMESTAMP ENCODE zstd,
   ends_at TIMESTAMP ENCODE zstd
 );

@@ -134,3 +134,13 @@ CREATE TABLE IF NOT EXISTS accounts (
 CREATE TABLE IF NOT EXISTS requests_last_sync (
   last_sync TIMESTAMP ENCODE lzo
 );
+
+CREATE TABLE IF NOT EXISTS discounts (
+  id INT4 DISTKEY ENCODE lzo,
+  account_id INT4 ENCODE lzo,
+  service_id INT4 ENCODE lzo,
+  name VARCHAR(256) ENCODE lzo,
+  percent cpm DECIMAL(6,3) ENCODE lzo,
+  starts_at TIMESTAMP ENCODE lzo,
+  ends_at TIMESTAMP ENCODE lzo
+);

@@ -136,8 +136,8 @@ CREATE TABLE IF NOT EXISTS requests_last_sync (
 );
 
 CREATE TABLE IF NOT EXISTS discounts (
-  id INT4 DISTKEY ENCODE zstd,
-  account_id INT4 ENCODE zstd,
+  id INT4 SORTKEY ENCODE zstd,
+  account_id INT4 DISTKEY ENCODE zstd,
   service_id INT4 ENCODE zstd,
   name VARCHAR(256) ENCODE zstd,
   percent cpm DECIMAL(6,3) ENCODE zstd,

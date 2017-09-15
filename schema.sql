@@ -89,7 +89,8 @@ CREATE TABLE IF NOT EXISTS hourly_project_costs (
   date TIMESTAMP SORTKEY ENCODE delta,
   cost FLOAT4,
   quantity FLOAT4,
-  prepaid FLOAT4
+  prepaid FLOAT4,
+  team VARCHAR(256) ENCODE zstd
 );
 
 CREATE TABLE IF NOT EXISTS reservations (
